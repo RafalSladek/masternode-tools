@@ -17,5 +17,5 @@ ln -s <YOUR_DIR>/masternode-tools/ddhelper.sh
 ```
 source /usr/local/bin/ddhelper.sh
 
-sentMetric $host $coin $metricname $value $role
+sentMetric $host $coin $metricname $value $role $username
 ```
