@@ -1,6 +1,6 @@
 #!/bin/bash
 #set -xe
-source /usr/bin/ddhelper.sh
+source /usr/local/bin/ddhelper.sh
 
 host=$(hostname)
 coin="zen"
@@ -18,8 +18,6 @@ value=$(/usr/bin/$coincli getconnectioncount)
     sentMetric $host $coin $metricname $value $role $username
 
 metricname="enabled"
-zensystemnodeid=81783
-zensystembaseurl=securenodes2.eu.zensystem.io
 value=$(/usr/bin/curl --silent "https://$zensystembaseurl/api/nodes/$zensystemnodeid/detail?key=$ZEN_SYSTEM_API_KEY" 2>&1 | | jq '.["status"]' | sed "s/\"//g")
 success=0
 if [[ 'up' == $value ]]; then
