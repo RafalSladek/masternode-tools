@@ -23,7 +23,7 @@ success=0
 if [[ 'up' == $value ]]; then
     success=1
 fi
-    sentMetric $host $coin $metricname $value $role $username
+    sentMetric $host $coin $metricname $success $role $username
 
 metricname="status"
 value=$(/usr/bin/$coincli getnetworkinfo | /bin/grep tls_cert_verified | /usr/bin/awk -F' ' '{printf "%s",$2}' | /usr/bin/tr -d ",")
@@ -31,4 +31,4 @@ success=0
 if [[ 'true' == $value ]]; then
     success=1
 fi
-    sentMetric $host $coin $metricname $value $role $username
+    sentMetric $host $coin $metricname $success $role $username
