@@ -41,8 +41,7 @@ function sentMetric() {
 									\"points\":[[$currenttime, $4]],
 									\"type\":\"gauge\",
 									\"host\":\"$1\",
-									\"user\":\"$6\",
-									\"tags\":[\"coin:$2\", \"role:$5\"]
+									\"tags\":[\"coin:$2\", \"role:$5\", \"user:$6\"]
 									}]
 								}" \
 							"https://app.datadoghq.com/api/v1/series?api_key=$DATADOG_API_KEY" > /dev/null
