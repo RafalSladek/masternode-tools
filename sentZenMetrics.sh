@@ -1,20 +1,20 @@
 #!/bin/bash
 #set -xe
-source /usr/local/bin/ddhelper.sh
+source /usr/bin/ddhelper.sh
 
 host=$(hostname)
 coin="zen"
-role="masternode"
+role="securenode"
 username=$(whoami)
 coindaemon="zend"
 coincli="zen-cli"
 
 metricname="blocks"
-value=$(/usr/local/bin/$coincli getblockcount)
+value=$(/usr/bin/$coincli getblockcount)
     sentMetric $host $coin $metricname $value $role $username
 
 metricname="connections"
-value=$(/usr/local/bin/$coincli getconnectioncount)
+value=$(/usr/bin/$coincli getconnectioncount)
     sentMetric $host $coin $metricname $value $role $username
 
 metricname="enabled"
@@ -28,7 +28,7 @@ fi
     sentMetric $host $coin $metricname $value $role $username
 
 metricname="status"
-value=$(/usr/local/bin/$coincli getnetworkinfo | /bin/grep tls_cert_verified | /usr/bin/awk -F' ' '{printf "%s",$2}' | /usr/bin/tr -d ",")
+value=$(/usr/bin/$coincli getnetworkinfo | /bin/grep tls_cert_verified | /usr/bin/awk -F' ' '{printf "%s",$2}' | /usr/bin/tr -d ",")
 success=0
 if [[ 'true' == $value ]]; then
     success=1
