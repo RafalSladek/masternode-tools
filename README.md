@@ -6,11 +6,7 @@ shell scripts for monitoring my masternodes
 ```export DATADOG_API_KEY=<YOUR_DATADOG_API_HERE>```
 
 2. clone this repo into `<YOUR_DIR>`, for example `/usr/local/src`
-3. link `ddhelper.sh` into /usr/local/bin with
-```
-cd /usr/local/bin
-ln -s <YOUR_DIR>/masternode-tools/ddhelper.sh
-```
+3. run `bash setup.sh`
 
 ## How to use the datadog helper function `sentMetric()`
 
