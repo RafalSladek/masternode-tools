@@ -1,0 +1,4 @@
+#!/bin/bash
+COINUSER=chaincoin
+PUBLIC_IP=$(curl -s ipecho.net/plain)
+sudo -u $COINUSER -H sh -c "echo '{ \"timestamp\": \"`date`\", \"details\": ['; chaincoin-cli getnetworkinfo; echo ','; chaincoin-cli mnsync status; echo ','; chaincoin-cli masternode list full $PUBLIC_IP; echo ']}'"
