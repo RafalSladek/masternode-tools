@@ -18,8 +18,8 @@ value=$(/usr/local/bin/$coindaemon getconnectioncount)
     sentMetric $host $coin $metricname $value $role $username
 
 metricname="enabled"
-pubicip=$(curl -s ipecho.net/plain)
-value=$(/usr/local/bin/$coindaemon masternode list full | /bin/grep $pubicip | /bin/grep -w ENABLED | /usr/bin/wc -l)
+pubilcip=$(curl -s ipecho.net/plain)
+value=$(/usr/local/bin/$coindaemon masternode list full | /bin/grep $pubilcip | /bin/grep -w ENABLED | /usr/bin/wc -l)
     sentMetric $host $coin $metricname $value $role $username
 
 metricname="status"
