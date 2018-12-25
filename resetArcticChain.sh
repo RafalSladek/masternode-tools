@@ -1,7 +1,11 @@
 #!/bin/bash
 
 set -xue
+
+source /usr/local/bin/tools.sh
+
 COINUSER=arcticcoin
+COINEXPLORER=http://explorer.arcticcoin.org/api/getblockcount
 
 function wipeArcticoinChain() {
     cd /home/arcticcoin/.arcticcore
@@ -11,16 +15,11 @@ function wipeArcticoinChain() {
     ls -al
 }
 
-function runCommandWithUser() {
-    COINUSER=$1
-    COMMAND=$2
-    sudo -u $COINUSER -H sh -c "$COMMAND"
-}
-
 sudo systemctl stop arcticcoin
 
-runCommandWithUser $COINUSER 'arcticcoind -rescan' && localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
-globalBlock=$(curl -s http://explorer.arcticcoin.org/api/getblockcount)
+localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
+globalBlock=$(curl -sk "$COINEXPLORER")
+
 if [[ "$localBlock" == "$globalBlock" ]]; then
     echo "Yeee, your arcticcoin is in sync"
     runCommandWithUser $COINUSER 'arcticcoin-cli stop'
@@ -28,10 +27,11 @@ if [[ "$localBlock" == "$globalBlock" ]]; then
     arcticstatus
 else
     runCommandWithUser $COINUSER 'arcticcoin-cli stop'
-    runCommandWithUser $COINUSER 'arcticcoind -reindex' 
+    runCommandWithUser $COINUSER 'arcticcoind -rescan'
+    #runCommandWithUser $COINUSER 'arcticcoind -reindex' 
     arcticstatus
     localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
-    globalBlock=$(curl -s http://explorer.arcticcoin.org/api/getblockcount)
+    globalBlock=$(curl -sk "$COINEXPLORER")
     if [[ "$localBlock" == "$globalBlock" ]]; then
         echo "Yeee, your arcticcoin is in sync after second try"
         runCommandWithUser $COINUSER 'arcticcoin-cli stop'

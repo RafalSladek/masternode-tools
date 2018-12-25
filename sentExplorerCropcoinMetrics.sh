@@ -3,10 +3,10 @@
 source /usr/local/bin/ddhelper.sh
 
 host=$(hostname)
-coin="arcticcoin"
+coin="cropcoin"
 role="masternode"
 username=$(whoami)
-coinexplorerurl=http://explorer.arcticcoin.org/api/getblockcount
+coinexplorerurl=https://cropcoin.blockxplorer.info/api/getblockcount
 
 highestBlock=$(curl -sk $coinexplorerurl)
 metricname="explorer.blocks"
