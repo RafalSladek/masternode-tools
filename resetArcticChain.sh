@@ -14,9 +14,6 @@ function wipeArcticoinChain() {
     sudo rm -vrf backups blocks chainstate database
     ls -al
 }
-
-sudo systemctl stop arcticcoin
-
 localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
 globalBlock=$(curl -sk "$COINEXPLORER")
 
