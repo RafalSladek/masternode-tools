@@ -24,5 +24,6 @@ if [[ "$localBlock" == "$globalBlock" ]]; then
     echo "Yeee, your arcticcoin is in sync"
     arcticstatus
 else
+    sudo systemctl stop arcticcoin
     wipeArcticoinChain
 fi
