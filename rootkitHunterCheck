@@ -1,0 +1,4 @@
+#!/bin/bash
+sudo rkhunter --versioncheck
+sudo rkhunter --update
+sudo rkhunter -c --enable all --disable none --rwo
