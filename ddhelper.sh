@@ -40,7 +40,7 @@ function sentEvent() {
 								\"tags\":[\"coin:$2\", \"role:$5\", \"user:$6\"]
 								\"alert_type\": \"info\"
 								}" \
-							"https://app.datadoghq.com/api/v1/series?api_key=$DATADOG_API_KEY" > /dev/null
+							"https://api.datadoghq.com/api/v1/events?api_key=$DATADOG_API_KEY" > /dev/null
 						fi
 					fi
 				fi
