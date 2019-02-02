@@ -8,6 +8,6 @@ role="masternode"
 username=$(whoami)
 tx_base_url=http://explorer.arcticcoin.org/tx
 
-title="wallet transaction"
+title="wallet.transaction"
 message="$tx_base_url/$txid"
-    sentEvent $host $coin $title "$message" $role $username
+    sentEvent $host $coin "$title" "$message" $role $username
