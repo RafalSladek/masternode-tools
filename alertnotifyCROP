@@ -1,0 +1,12 @@
+#!/bin/bash
+source /usr/local/bin/ddhelper.sh
+
+alertMessage=$1
+host=$(hostname)
+coin="cropcoin"
+role="masternode"
+username=$(whoami)
+
+title="alert"
+message="$alertMessage"
+    sentEvent $host $coin "$title" "$message" $role $username alert
