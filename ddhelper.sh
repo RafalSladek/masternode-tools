@@ -3,7 +3,7 @@
 function sentEvent() {
 	if [ -z "$DATADOG_API_KEY" ]
 	then
-		echo "ERROR: Please specify the DATADOG_API_KEY as the env variable."
+		echo "ERROR: Please specify the DATADOG_API_KEY as env variable."
 		exit -1
 	fi
 
@@ -31,13 +31,12 @@ function sentEvent() {
 						then
 						echo "ERROR: Please specify the username as the sixth argument."
 						else
-							currenttime=$(/bin/date +%s)
 							/usr/bin/curl --silent -X POST -H "Content-type: application/json" \
 							-d "{
 								\"title\": \"[$1][$5][$2] $3\",
 								\"text\": \"$4\",
 								\"priority\": \"normal\",
-								\"tags\":[\"coin:$2\", \"role:$5\", \"user:$6\"]
+								\"tags\":[\"coin:$2\", \"role:$5\", \"user:$6\"],
 								\"alert_type\": \"info\"
 								}" \
 							"https://api.datadoghq.com/api/v1/events?api_key=$DATADOG_API_KEY" > /dev/null
@@ -53,7 +52,7 @@ function sentMetric() {
 
 	if [ -z "$DATADOG_API_KEY" ]
 	then
-		echo "ERROR: Please specify the DATADOG_API_KEY as the env variable."
+		echo "ERROR: Please specify the DATADOG_API_KEY as env variable."
 		exit -1
 	fi
 
