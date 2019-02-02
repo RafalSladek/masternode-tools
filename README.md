@@ -15,3 +15,20 @@ source /usr/local/bin/ddhelper.sh
 
 sentMetric $host $coin $metricname $value $role $username
 ```
+
+## How to use the datadog helper function `sentEvent()`
+
+```
+source /usr/local/bin/ddhelper.sh
+
+// alert_type is option, default is info
+sentMetric $host $coin $title $message $role $username <alert_type>
+```
+
+## How to use wallet|alert notify script
+
+1. edit your coin config file
+2. for wallet transactions use
+`walletnotify=/usr/local/bin/walletnotifyCROP %s`
+3. for daemon alerts use
+`alertnotify=/usr/local/bin/alertnotifyCROP %s`
