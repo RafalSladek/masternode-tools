@@ -30,17 +30,23 @@ function sentEvent() {
 						if [ -z "$6" ]
 						then
 						echo "ERROR: Please specify the username as the sixth argument."
-						else
+						else	
+							if [ -z "$7" ] then
+								alertType=info
+							else
+								alertType=$7
+							fi
+
 							/usr/bin/curl --silent -X POST -H "Content-type: application/json" \
 							-d "{
-								\"title\": \"[$1][$5][$2] $3\",
+								\"title\": \"[$3][$5][$2][$1]\",
 								\"text\": \"$4\",
 								\"priority\": \"normal\",
-								\"tags\":[\"coin:$2\", \"role:$5\", \"user:$6\"],
-								\"alert_type\": \"info\"
+								\"tags\":[\"coin:$2\", \"role:$5\", \"user:$6\", \"eventType:$3\"],
+								\"alert_type\": \"$alertType\"
 								}" \
 							"https://api.datadoghq.com/api/v1/events?api_key=$DATADOG_API_KEY" > /dev/null
-						fi
+						fi	
 					fi
 				fi
 			fi
