@@ -10,4 +10,4 @@ tx_base_url=http://explorer.arcticcoin.org/tx
 
 title="wallet transaction"
 message="$tx_base_url/$txid"
-    sentMEvent $host $coin $title $message $role $username
+    sentEvent $host $coin $title $message $role $username
