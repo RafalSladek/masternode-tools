@@ -4,17 +4,14 @@ source /usr/local/bin/tools.sh
 
 COINUSER=arcticcoin
 COINEXPLORER=http://explorer.arcticcoin.org/api/getblockcount
+COINPATH=/home/$COINUSER/.arcticcore
 
 function wipeArcticoinChain() {
-    #runCommandWithUser $COINUSER 'arcticcoin-cli stop'
-    #runCommandWithUser $COINUSER 'arcticcoind -rescan'
-    #runCommandWithUser $COINUSER 'arcticcoind -reindex'
-    cd /home/arcticcoin/.arcticcore
-    ls -al
-    sudo rm -vf *.log *.dat .lock
-    sudo rm -vrf backups blocks chainstate database
-    ls -al
-    sudo systemctl start arcticcoin
+    cd $COINPATH
+    sudo rm -vf *.log *.dat .lock && \
+    sudo rm -vrf backups blocks chainstate database && \
+    sudo systemctl start arcticcoin && \
+    echo "coin daemon $COINUSER is enabeld ..."
 }
 
 localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
@@ -24,6 +21,9 @@ if [[ "$localBlock" == "$globalBlock" ]]; then
     echo "Yeee, your arcticcoin is in sync"
     arcticstatus
 else
+    echo "local blocks:  $localBlock"
+    echo "global blocks: $globalBlock"
     sudo systemctl stop arcticcoin
-    wipeArcticoinChain
+    nohup wipeArcticoinChain  &>/dev/null &
+    echo "deleting coinf files from $COINPATH in progress..."
 fi
