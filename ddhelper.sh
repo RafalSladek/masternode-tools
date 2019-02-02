@@ -9,29 +9,30 @@ function sentEvent() {
 
 	if [ -z "$1" ]
 	then
-	echo "ERROR: Please specify the host as the first argument."
-	else
+		echo "ERROR: Please specify the host as the first argument."
+		else
 		if [ -z "$2" ]
 		then
-		echo "ERROR: Please specify the coin as the second argument."
-		else
+			echo "ERROR: Please specify the coin as the second argument."
+			else
 			if [ -z "$3" ]
 			then
-			echo "ERROR: Please specify the title as the third argument."
-			else
+				echo "ERROR: Please specify the title as the third argument."
+				else
 				if [ -z "$4" ]
 				then
-				echo "ERROR: Please specify the message as the fourth argument."
-				else
+					echo "ERROR: Please specify the message as the fourth argument."
+					else
 					if [ -z "$5" ]
 					then
-					echo "ERROR: Please specify the role as the fifth argument."
-					else
+						echo "ERROR: Please specify the role as the fifth argument."
+						else
 						if [ -z "$6" ]
 						then
-						echo "ERROR: Please specify the username as the sixth argument."
-						else	
-							if [ -z "$7" ] then
+							echo "ERROR: Please specify the username as the sixth argument."
+							else	
+							if [ -z "$7" ]
+							then
 								alertType=info
 							else
 								alertType=$7
