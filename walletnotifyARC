@@ -1,0 +1,13 @@
+#!/bin/bash
+source /usr/local/bin/ddhelper.sh
+
+txid=$1
+host=$(hostname)
+coin="arcticcoin"
+role="masternode"
+username=$(whoami)
+tx_base_url=http://explorer.arcticcoin.org/tx
+
+title="wallet transaction"
+message="$tx_base_url/$txid"
+    sentMEvent $host $coin $title $message $role $username
