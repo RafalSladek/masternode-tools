@@ -9,5 +9,5 @@ username=$(whoami)
 tx_base_url=https://cropcoin.blockxplorer.info/tx
 
 title="wallet transaction"
-message="$tx_base_urlgit/$txid"
-    sentEvent $host $coin $title $message $role $username
+message="$tx_base_url/$txid"
+    sentEvent $host $coin $title "$message" $role $username
