@@ -8,10 +8,11 @@ COINPATH=/home/$COINUSER/.arcticcore
 
 function wipeArcticoinChain() {
     cd $COINPATH
+    echo "deleting coinf files from $COINPATH in progress..."
     sudo rm -vf *.log *.dat .lock && \
     sudo rm -vrf backups blocks chainstate database && \
     sudo systemctl start arcticcoin && \
-    echo "coin daemon $COINUSER is enabeld ..."
+    echo "coin daemon $COINUSER is started ..."
 }
 
 localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
@@ -23,7 +24,5 @@ if [[ "$localBlock" == "$globalBlock" ]]; then
 else
     echo "local blocks:  $localBlock"
     echo "global blocks: $globalBlock"
-    sudo systemctl stop arcticcoin
-    nohup wipeArcticoinChain  &>/dev/null &
-    echo "deleting coinf files from $COINPATH in progress..."
+    sudo systemctl stop arcticcoin &&  wipeArcticoinChain
 fi
