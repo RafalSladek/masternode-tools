@@ -1,3 +1,5 @@
 #!/bin/bash
 COINUSER=arcticcoin
-sudo -u $COINUSER -H sh -c "echo '{ \"timestamp\": \"`date`\",  \"highestBlock\": \"$highestBlock\", \"details\": ['; arcticcoin-cli listaccounts; echo ','; arcticcoin-cli getinfo; echo ',' ; arcticcoin-cli getwalletinfo ; echo ','; arcticcoin-cli getconnectioncount; echo ']}'"
+coinexplorerurl=http://explorer.arcticcoin.org/api/getblockcount
+highestBlock=$(curl -sk $coinexplorerurl)
+sudo -u $COINUSER -H sh -c "echo '{ \"timestamp\": \"`date`\",  \"highestBlock\": \"$highestBlock\", \"details\": ['; arcticcoin-cli listaccounts; echo ','; arcticcoin-cli getinfo; echo ',' ; arcticcoin-cli getwalletinfo ; echo ','; arcticcoin-cli getnetworkinfo ; echo ']}'"
