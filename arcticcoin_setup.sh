@@ -1,10 +1,14 @@
 #!/bin/bash
 set -xeu
-
+COIN="arcticcoin"
+DAEMON_NAME="${COIN}d"
 TMP_FOLDER=$(mktemp -d)
-CONFIG_FILE="arcticcoin.conf"
-BINARY_FILE="/usr/local/bin/arcticcoind"
-COIN_TGZ='https://github.com/ArcticCore/arcticcoin/releases/download/v0.12.1.2/arcticcore-0.12.2-linux64.tar.gz'
+CONFIG_FILE="${COIN}.conf"
+BINARY_FILE="/usr/local/bin/${DAEMON_NAME}"
+COIN_CORE="arcticcore"
+COIN_TGZ_VERSION="0.12.2"
+COIN_TGZ_FILENAME="${COIN_CORE}-${COIN_TGZ_VERSION}-linux64.tar.gz"
+COIN_TGZ="https://github.com/${COIN_CORE}/${COIN}/releases/download/v${COIN_TGZ_VERSION}/${COIN_TGZ_FILENAME}"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -21,8 +25,8 @@ fi
 
 
 function checks() {
-if [[ $(lsb_release -d) != *16.04* ]]; then
-  echo -e "${RED}You are not running Ubuntu 16.04. Installation is cancelled.${NC}"
+if [[ $(lsb_release -d) != *16.04* ] || [ $(lsb_release -d) != *stretch* ]]; then
+  echo -e "${RED}You are not running Ubuntu 16.04. or Debian. Installation is cancelled.${NC}"
   exit 1
 fi
 
@@ -31,19 +35,19 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-if [ -n "$(pidof arcticcoind)" ]; then
+if [ -n "$(pidof ${DAEMON_NAME})" ]; then
   echo -e "${GREEN}\c"
-  read -e -p "Arcticcoind is already running. Do you want to add another MN? [Y/N]" NEW_CROP
+  read -e -p "${DAEMON_NAME} is already running. Do you want to add another MN? [Y/N]" NEW_COIN
   echo -e "{NC}"
   clear
 else
-  NEW_CROP="new"
+  NEW_COIN="new"
 fi
 }
 
 function prepare_system() {
 
-echo -e "Prepare the system to install Arcticcoin master node."
+echo -e "Prepare the system to install ${DAEMON_NAME} master node."
 apt-get update >/dev/null 2>&1
 DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -y -qq upgrade >/dev/null 2>&1
 apt install -y software-properties-common >/dev/null 2>&1
@@ -89,36 +93,36 @@ clear
 function deploy_binaries() {
   cd /tmp
   wget -q $COIN_TGZ >/dev/null 2>&1
-  tar -xvf 'arcticcore-0.12.2-linux64.tar.gz' >/dev/null 2>&1
-  mv arcticcore-0.12.1/bin/* /usr/local/bin  >/dev/null 2>&1
-  mv arcticcore-0.12.1/lib/* /usr/local/lib  >/dev/null 2>&1
-  mv arcticcore-0.12.1/include/* /usr/local/include  >/dev/null 2>&1
-  rm arcticcore-0.12.2-linux64.tar.gz >/dev/null 2>&1
-  rm -rf arcticcore-0.12.1 >/dev/null 2>&1
+  tar -xvf "${COIN_TGZ_FILENAME}" >/dev/null 2>&1
+  mv ${COIN_CORE}-0.12.1/bin/* /usr/local/bin  >/dev/null 2>&1
+  mv ${COIN_CORE}-0.12.1/lib/* /usr/local/lib  >/dev/null 2>&1
+  mv ${COIN_CORE}-0.12.1/include/* /usr/local/include  >/dev/null 2>&1
+  rm ${COIN_CORE}-0.12.2-linux64.tar.gz >/dev/null 2>&1
+  rm -rf ${COIN_CORE}-0.12.1 >/dev/null 2>&1
 }
 
 function enable_firewall() {
-  echo -e "Installing and setting up firewall to allow incomning access on port ${GREEN}$CROPCOINPORT${NC}"
-  ufw allow $CROPCOINPORT/tcp comment "Arcticcoin MN port" >/dev/null
-  ufw allow $[CROPCOINPORT+1]/tcp comment "Arcticcoin RPC port" >/dev/null
+  echo -e "Installing and setting up firewall to allow incomning access on port ${GREEN}$COINPORT${NC}"
+  ufw allow $COINPORT/tcp comment "${COIN} MN port" >/dev/null
+  ufw allow $[COINPORT+1]/tcp comment "${COIN} RPC port" >/dev/null
   ufw allow ssh >/dev/null 2>&1
   ufw limit ssh/tcp >/dev/null 2>&1
   ufw default allow outgoing >/dev/null 2>&1
   echo "y" | ufw enable >/dev/null 2>&1
 }
 
-function systemd_cropcoin() {
-  cat << EOF > /etc/systemd/system/$CROPCOINUSER.service
+function systemd_coin() {
+  cat << EOF > /etc/systemd/system/$COINUSER.service
 [Unit]
-Description=Arcticcoin service
+Description=${COIN} service
 After=network.target
 
 [Service]
 
 Type=forking
-User=$CROPCOINUSER
-Group=$CROPCOINUSER
-WorkingDirectory=$CROPCOINHOME
+User=$COINUSER
+Group=$COINUSER
+WorkingDirectory=$COINHOME
 ExecStart=$BINARY_FILE -daemon
 ExecStop=$BINARY_FILE stop
 
@@ -135,40 +139,40 @@ EOF
 
   systemctl daemon-reload
   sleep 3
-  systemctl start $CROPCOINUSER.service
-  systemctl enable $CROPCOINUSER.service >/dev/null 2>&1
+  systemctl start $COINUSER.service
+  systemctl enable $COINUSER.service >/dev/null 2>&1
 
-  if [[ -z $(pidof cropcoind) ]]; then
-    echo -e "${RED}Arcticcoind is not running${NC}, please investigate. You should start by running the following commands as root:"
-    echo "systemctl start $CROPCOINUSER.service"
-    echo "systemctl status $CROPCOINUSER.service"
+  if [[ -z $(pidof ${DAEMON_NAME}) ]]; then
+    echo -e "${RED}${DAEMON_NAME} is not running${NC}, please investigate. You should start by running the following commands as root:"
+    echo "systemctl start $COINUSER.service"
+    echo "systemctl status $COINUSER.service"
     echo "less /var/log/syslog"
     exit 1
   fi
 }
 
 function ask_port() {
-DEFAULTCROPCOINPORT=7209
-read -p "ARCTICCOIN Port: " -i $DEFAULTCROPCOINPORT -e CROPCOINPORT
-: ${CROPCOINPORT:=$DEFAULTCROPCOINPORT}
+DEFAULTCOINPORT=7209
+read -p "${COIN} Port: " -i $DEFAULTCOINPORT -e COINPORT
+: ${COINPORT:=$DEFAULTCOINPORT}
 }
 
 function ask_user() {
-  DEFAULTCROPCOINUSER="arcticcoin"
-  read -p "Arcticcoin user: " -i $DEFAULTCROPCOINUSER -e CROPCOINUSER
-  : ${CROPCOINUSER:=$DEFAULTCROPCOINUSER}
+  DEFAULTCOINUSER="${COIN}"
+  read -p "${COIN} user: " -i $DEFAULTCOINUSER -e COINUSER
+  : ${COINUSER:=$DEFAULTCOINUSER}
 
-  if [ -z "$(getent passwd $CROPCOINUSER)" ]; then
-    useradd -m $CROPCOINUSER
+  if [ -z "$(getent passwd $COINUSER)" ]; then
+    useradd -m $COINUSER
     USERPASS=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w12 | head -n1)
-    echo "$CROPCOINUSER:$USERPASS" | chpasswd
+    echo "$COINUSER:$USERPASS" | chpasswd
 
-    CROPCOINHOME=$(sudo -H -u $CROPCOINUSER bash -c 'echo $HOME')
-    DEFAULTCROPCOINFOLDER="$CROPCOINHOME/.arcticcore"
-    read -p "Configuration folder: " -i $DEFAULTCROPCOINFOLDER -e CROPCOINFOLDER
-    : ${CROPCOINFOLDER:=$DEFAULTCROPCOINFOLDER}
-    mkdir -p $CROPCOINFOLDER
-    chown -R $CROPCOINUSER: $CROPCOINFOLDER >/dev/null
+    COINHOME=$(sudo -H -u $COINUSER bash -c 'echo $HOME')
+    DEFAULTCOINFOLDER="$COINHOME/.${COIN_CORE}"
+    read -p "Configuration folder: " -i $DEFAULTCOINFOLDER -e COINFOLDER
+    : ${COINFOLDER:=$DEFAULTCOINFOLDER}
+    mkdir -p $COINFOLDER
+    chown -R $COINUSER: $COINFOLDER >/dev/null
   else
     clear
     echo -e "${RED}User exits. Please enter another username: ${NC}"
@@ -181,7 +185,7 @@ function check_port() {
   PORTS=($(netstat -tnlp | awk '/LISTEN/ {print $4}' | awk -F":" '{print $NF}' | sort | uniq | tr '\r\n'  ' '))
   ask_port
 
-  while [[ ${PORTS[@]} =~ $CROPCOINPORT ]] || [[ ${PORTS[@]} =~ $[CROPCOINPORT+1] ]]; do
+  while [[ ${PORTS[@]} =~ $COINPORT ]] || [[ ${PORTS[@]} =~ $[COINPORT+1] ]]; do
     clear
     echo -e "${RED}Port in use, please choose another port:${NF}"
     ask_port
@@ -191,56 +195,56 @@ function check_port() {
 function create_config() {
   RPCUSER=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w10 | head -n1)
   RPCPASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w22 | head -n1)
-  cat << EOF > $CROPCOINFOLDER/$CONFIG_FILE
+  cat << EOF > $COINFOLDER/$CONFIG_FILE
 rpcuser=$RPCUSER
 rpcpassword=$RPCPASSWORD
 rpcallowip=127.0.0.1
-rpcport=$[CROPCOINPORT+1]
+rpcport=$[COINPORT+1]
 listen=1
 server=1
 daemon=1
-port=$CROPCOINPORT
+port=$COINPORT
 EOF
 }
 
 function create_key() {
   echo -e "Enter your ${RED}Masternode Private Key${NC}. Leave it blank to generate a new ${RED}Masternode Private Key${NC} for you:"
-  read -e CROPCOINKEY
-  if [[ -z "$CROPCOINKEY" ]]; then
-  sudo -u $CROPCOINUSER /usr/local/bin/arcticcoind -conf=$CROPCOINFOLDER/$CONFIG_FILE -datadir=$CROPCOINFOLDER
+  read -e COINKEY
+  if [[ -z "$COINKEY" ]]; then
+  sudo -u $COINUSER /usr/local/bin/${DAEMON_NAME} -conf=$COINFOLDER/$CONFIG_FILE -datadir=$COINFOLDER
   sleep 5
-  if [ -z "$(pidof arcticcoind)" ]; then
-   echo -e "${RED}Arcticcoind server couldn't start. Check /var/log/syslog for errors.{$NC}"
+  if [ -z "$(pidof ${DAEMON_NAME})" ]; then
+   echo -e "${RED}${DAEMON_NAME} server couldn't start. Check /var/log/syslog for errors.{$NC}"
    exit 1
   fi
-  CROPCOINKEY=$(sudo -u $CROPCOINUSER $BINARY_FILE -conf=$CROPCOINFOLDER/$CONFIG_FILE -datadir=$CROPCOINFOLDER goldminenode genkey)
-  sudo -u $CROPCOINUSER $BINARY_FILE -conf=$CROPCOINFOLDER/$CONFIG_FILE -datadir=$CROPCOINFOLDER stop
+  COINKEY=$(sudo -u $COINUSER $BINARY_FILE -conf=$COINFOLDER/$CONFIG_FILE -datadir=$COINFOLDER goldminenode genkey)
+  sudo -u $COINUSER $BINARY_FILE -conf=$COINFOLDER/$CONFIG_FILE -datadir=$COINFOLDER stop
 fi
 }
 
 function update_config() {
-  sed -i 's/daemon=1/daemon=0/' $CROPCOINFOLDER/$CONFIG_FILE
+  sed -i 's/daemon=1/daemon=0/' $COINFOLDER/$CONFIG_FILE
   NODEIP=$(curl -s4 api.ipify.org)
-  cat << EOF >> $CROPCOINFOLDER/$CONFIG_FILE
+  cat << EOF >> $COINFOLDER/$CONFIG_FILE
 logtimestamps=1
 maxconnections=256
 goldminenode=1
 externalip=$NODEIP
-goldminenodeprivkey=$CROPCOINKEY
+goldminenodeprivkey=$COINKEY
 EOF
-  chown -R $CROPCOINUSER: $CROPCOINFOLDER >/dev/null
+  chown -R $COINUSER: $COINFOLDER >/dev/null
 }
 
 function important_information() {
  echo
  echo -e "================================================================================================================================"
- echo -e "Arcticcoin Masternode is up and running as user ${GREEN}$CROPCOINUSER${NC} and it is listening on port ${GREEN}$CROPCOINPORT${NC}."
- echo -e "${GREEN}$CROPCOINUSER${NC} password is ${RED}$USERPASS${NC}"
- echo -e "Configuration file is: ${RED}$CROPCOINFOLDER/$CONFIG_FILE${NC}"
- echo -e "Start: ${RED}systemctl start $CROPCOINUSER.service${NC}"
- echo -e "Stop: ${RED}systemctl stop $CROPCOINUSER.service${NC}"
- echo -e "VPS_IP:PORT ${RED}$NODEIP:$CROPCOINPORT${NC}"
- echo -e "MASTERNODE PRIVATEKEY is: ${RED}$CROPCOINKEY${NC}"
+ echo -e "${COIN} Masternode is up and running as user ${GREEN}$COINUSER${NC} and it is listening on port ${GREEN}$COINPORT${NC}."
+ echo -e "${GREEN}$COINUSER${NC} password is ${RED}$USERPASS${NC}"
+ echo -e "Configuration file is: ${RED}$COINFOLDER/$CONFIG_FILE${NC}"
+ echo -e "Start: ${RED}systemctl start $COINUSER.service${NC}"
+ echo -e "Stop: ${RED}systemctl stop $COINUSER.service${NC}"
+ echo -e "VPS_IP:PORT ${RED}$NODEIP:$COINPORT${NC}"
+ echo -e "MASTERNODE PRIVATEKEY is: ${RED}$COINKEY${NC}"
  echo -e "================================================================================================================================"
 }
 
@@ -251,7 +255,7 @@ function setup_node() {
   create_key
   update_config
   enable_firewall
-  systemd_cropcoin
+  systemd_coin
   important_information
 }
 
@@ -260,15 +264,15 @@ function setup_node() {
 clear
 
 checks
-if [[ ("$NEW_CROP" == "y" || "$NEW_CROP" == "Y") ]]; then
+if [[ ("$NEW_COIN" == "y" || "$NEW_COIN" == "Y") ]]; then
   setup_node
   exit 0
-elif [[ "$NEW_CROP" == "new" ]]; then
+elif [[ "$NEW_COIN" == "new" ]]; then
   prepare_system
   deploy_binaries
   setup_node
 else
-  echo -e "${GREEN}Arcticcoind already running.${NC}"
+  echo -e "${GREEN}${DAEMON_NAME} already running.${NC}"
   exit 0
 fi
 
