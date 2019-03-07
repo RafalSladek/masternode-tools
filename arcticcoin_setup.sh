@@ -7,8 +7,9 @@ CONFIG_FILE="${COIN}.conf"
 BINARY_FILE="/usr/local/bin/${DAEMON_NAME}"
 COIN_CORE="arcticcore"
 COIN_TGZ_VERSION="0.12.2"
+TAG_VERSION="0.12.1.2"
 COIN_TGZ_FILENAME="${COIN_CORE}-${COIN_TGZ_VERSION}-linux64.tar.gz"
-COIN_TGZ="https://github.com/${COIN_CORE}/${COIN}/releases/download/v${COIN_TGZ_VERSION}/${COIN_TGZ_FILENAME}"
+COIN_TGZ="https://github.com/${COIN_CORE}/${COIN}/releases/download/v${TAG_VERSION}/${COIN_TGZ_FILENAME}"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -92,8 +93,8 @@ clear
 
 function deploy_binaries() {
   cd /tmp
-  wget -q $COIN_TGZ >/dev/null 2>&1
-  tar -xvf "${COIN_TGZ_FILENAME}" >/dev/null 2>&1
+  wget -q $COIN_TGZ
+  tar -xvf "${COIN_TGZ_FILENAME}"
   mv ${COIN_CORE}-0.12.1/bin/* /usr/local/bin  >/dev/null 2>&1
   mv ${COIN_CORE}-0.12.1/lib/* /usr/local/lib  >/dev/null 2>&1
   mv ${COIN_CORE}-0.12.1/include/* /usr/local/include  >/dev/null 2>&1
@@ -269,7 +270,7 @@ if [[ ("$NEW_COIN" == "y" || "$NEW_COIN" == "Y") ]]; then
   exit 0
 elif [[ "$NEW_COIN" == "new" ]]; then
   prepare_system
-  deploy_binaries
+  #deploy_binaries
   setup_node
 else
   echo -e "${GREEN}${DAEMON_NAME} already running.${NC}"
