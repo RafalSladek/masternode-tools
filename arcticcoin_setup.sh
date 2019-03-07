@@ -215,7 +215,7 @@ function create_key() {
   read -e COINKEY
   if [[ -z "$COINKEY" ]]; then
   sudo -u $COINUSER /usr/local/bin/${DAEMON_NAME} -conf=$COINFOLDER/$CONFIG_FILE -datadir=$COINFOLDER
-  sleep 5
+  sleep 30
   if [ -z "$(pidof ${DAEMON_NAME})" ]; then
    echo -e "${RED}${DAEMON_NAME} server couldn't start. Check /var/log/syslog for errors.{$NC}"
    exit 1
