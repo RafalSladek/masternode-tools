@@ -1,10 +1,12 @@
 #!/bin/bash
 set -xeu
 COIN="arcticcoin"
+CLI_NAME="${COIN}-cli"
 DAEMON_NAME="${COIN}d"
 TMP_FOLDER=$(mktemp -d)
 CONFIG_FILE="${COIN}.conf"
 BINARY_FILE="/usr/local/bin/${DAEMON_NAME}"
+BINARY_FILE_CLI="/usr/local/bin/${CLI_NAME}"
 COIN_CORE="arcticcore"
 COIN_TGZ_VERSION="0.12.2"
 TAG_VERSION="0.12.1.2"
@@ -125,7 +127,7 @@ User=$COINUSER
 Group=$COINUSER
 WorkingDirectory=$COINHOME
 ExecStart=$BINARY_FILE -daemon
-ExecStop=$BINARY_FILE stop
+ExecStop=$BINARY_FILE_CLI stop
 
 Restart=always
 PrivateTmp=true
@@ -218,8 +220,8 @@ function create_key() {
    echo -e "${RED}${DAEMON_NAME} server couldn't start. Check /var/log/syslog for errors.{$NC}"
    exit 1
   fi
-  COINKEY=$(sudo -u $COINUSER $BINARY_FILE -conf=$COINFOLDER/$CONFIG_FILE -datadir=$COINFOLDER goldminenode genkey)
-  sudo -u $COINUSER $BINARY_FILE -conf=$COINFOLDER/$CONFIG_FILE -datadir=$COINFOLDER stop
+  COINKEY=$(sudo -u $COINUSER $BINARY_FILE_CLI -conf=$COINFOLDER/$CONFIG_FILE -datadir=$COINFOLDER goldminenode genkey)
+  sudo -u $COINUSER $BINARY_FILE_CLI -conf=$COINFOLDER/$CONFIG_FILE -datadir=$COINFOLDER stop
 fi
 }
 
