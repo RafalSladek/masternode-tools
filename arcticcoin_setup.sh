@@ -25,7 +25,7 @@ fi
 
 
 function checks() {
-if [[ $(lsb_release -d) != *16.04* ] || [ $(lsb_release -d) != *stretch* ]]; then
+if [[ $(lsb_release -d) != *16.04* ]] && [[ $(lsb_release -d) != *stretch* ]]; then
   echo -e "${RED}You are not running Ubuntu 16.04. or Debian. Installation is cancelled.${NC}"
   exit 1
 fi
