@@ -25,5 +25,6 @@ else
     echo "local blocks:  $localBlock"
     echo "global blocks: $globalBlock"
     sudo systemctl stop arcticcoin &&  wipeArcticoinChain
+    sleep 30
     arcticstatus
 fi
