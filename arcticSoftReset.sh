@@ -1,18 +1,15 @@
 #!/bin/bash
-#set -xue
+set -xue
 source /usr/local/bin/tools.sh
 
 COINUSER=arcticcoin
 COINEXPLORER=http://explorer.arcticcoin.org/api/getblockcount
 COINPATH=/home/$COINUSER/.arcticcore
 
-function wipeArcticoinChain() {
+function reindexing() {
     cd $COINPATH
-    echo "deleting coinf files from $COINPATH in progress..."
-    sudo rm -vf *.log *.dat .lock && \
-    sudo rm -vrf backups blocks chainstate database && \
-    sudo systemctl start arcticcoin && \
-    echo "coin daemon $COINUSER is started ..."
+    echo "coin daemon $COINUSER is reindexing ..."
+    runCommandWithUser $COINUSER 'arcticcoind -reindex'
 }
 
 localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
@@ -24,6 +21,6 @@ if [[ "$localBlock" == "$globalBlock" ]]; then
 else
     echo "local blocks:  $localBlock"
     echo "global blocks: $globalBlock"
-    sudo systemctl stop arcticcoin &&  wipeArcticoinChain
-    watch -d arcticstatus
+    sudo systemctl stop arcticcoin &&  reindexing
+    arcticstatus
 fi
