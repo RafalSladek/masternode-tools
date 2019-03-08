@@ -6,3 +6,13 @@ function runCommandWithUser() {
     COMMAND=$2
     sudo -u $COINUSER -H sh -c "$COMMAND"
 }
+
+function fail2banJailStatus() {
+  JAILS=($(fail2ban-client status | grep "Jail list" | sed -E 's/^[^:]+:[ \t]+//' | sed 's/,//g'))
+  for JAIL in ${JAILS[@]}
+  do
+    echo "--------------- 👀  JAIL STATUS: $JAIL ... ---------------"
+    fail2ban-client status $JAIL
+    echo "--------------- ... ---------------"
+  done
+}
