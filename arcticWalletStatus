@@ -1,5 +1,21 @@
 #!/bin/bash
+#set -xue
+source /usr/local/bin/tools.sh
+
 COINUSER=arcticcoin
-coinexplorerurl=http://explorer.arcticcoin.org/api/getblockcount
-highestBlock=$(curl -sk $coinexplorerurl)
-sudo -u $COINUSER -H sh -c "echo '{ \"timestamp\": \"`date`\",  \"highestBlock\": \"$highestBlock\", \"details\": ['; arcticcoin-cli goldminenode list-conf; echo ','; arcticcoin-cli getinfo; echo ','; arcticcoin-cli getnetworkinfo; echo ']}'"
+COINEXPLORER=http://explorer.arcticcoin.org/api/getblockcount
+highestBlock=$(curl -sk $COINEXPLORER)
+
+localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
+echo "local blocks:  $localBlock"
+globalBlock=$(curl -sk "$COINEXPLORER")
+echo "global blocks: $globalBlock"
+
+if [[ "$localBlock" == "$globalBlock" ]]; then
+    echo "Yeee, your arcticcoin is in sync"
+    runCommandWithUser $COINUSER 'arcticcoin-cli goldminenode list-conf'
+    runCommandWithUser $COINUSER 'arcticcoin-cli getinfo'
+else
+    echo "Local arcticcoin is OUT of sync. PLEASE RESET"
+    return -1
+fi
