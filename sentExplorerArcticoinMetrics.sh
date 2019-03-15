@@ -11,4 +11,4 @@ coinexplorerurl=http://explorer.arcticcoin.org/api/getblockcount
 highestBlock=$(curl -sk $coinexplorerurl)
 metricname="explorer.blocks"
 value=$highestBlock
-    sentMetric $host $coin $metricname $value $role $username
+sentMetric $host $coin $metricname $value $role $username

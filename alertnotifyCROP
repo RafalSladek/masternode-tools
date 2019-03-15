@@ -9,4 +9,4 @@ username=$(whoami)
 
 title="alert"
 message="$alertMessage"
-    sentEvent $host $coin "$title" "$message" $role $username alert
+sentEvent $host $coin "$title" "$message" $role $username alert

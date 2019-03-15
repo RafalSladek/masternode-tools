@@ -7,10 +7,10 @@ SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 TARGETPATH=/usr/local/bin
 
-for i in `ls -l | awk '{ if ( $1 ~ /x/ ) {print $NF}}'`; 
-    do
+for i in `ls -l | awk '{ if ( $1 ~ /x/ ) {print $NF}}'`;
+do
     if [ -x $i ]
-	then
+    then
         rm -rf $TARGETPATH/$i && echo "removed old $TARGETPATH/$i"
         ln -s $SCRIPTPATH/$i $TARGETPATH/$i && echo "linked new $SCRIPTPATH/$i"
     fi
