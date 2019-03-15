@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xue
+#set -xue
 source /usr/local/bin/tools.sh
 
 COINUSER=arcticcoin
@@ -9,7 +9,7 @@ COINPATH=/home/$COINUSER/.arcticcore
 function reindexing() {
     cd $COINPATH
     echo "coin daemon $COINUSER is reindexing ..."
-    runCommandWithUser $COINUSER 'arcticcoind -reindex'
+    runCommandWithUser $COINUSER 'nohup arcticcoind -reindex 1>&2 &'
 }
 
 localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
@@ -21,6 +21,6 @@ if [[ "$localBlock" == "$globalBlock" ]]; then
 else
     echo "local blocks:  $localBlock"
     echo "global blocks: $globalBlock"
-    sudo systemctl stop arcticcoin &&  reindexing
+    sudo systemctl stop arcticcoin && reindexing
     arcticstatus
 fi
