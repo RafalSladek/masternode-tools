@@ -23,8 +23,7 @@ peers.dat
 backups
 EOF
     
-    
-    /usr/bin/rsync -auvP --exclude-from $EXCLUDE_FILE --no-compress --timeout=60 -e "ssh" --rsync-path="sudo rsync" $SOURCE $TARGET_USER@${TARGET_IP}:$TARGET
+    /usr/bin/rsync --log-file=/var/log/rsyncArcticCoreWith.log -auP --exclude-from $EXCLUDE_FILE --no-compress --timeout=60 -e "ssh" --rsync-path="sudo rsync" $SOURCE $TARGET_USER@${TARGET_IP}:$TARGET
 }
 
 rsyncArcticCoreWith '81.169.223.222'
