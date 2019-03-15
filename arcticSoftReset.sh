@@ -1,15 +1,17 @@
 #!/bin/bash
-#set -xue
+set -xue
 source /usr/local/bin/tools.sh
 
 COINUSER=arcticcoin
 COINEXPLORER=http://explorer.arcticcoin.org/api/getblockcount
 COINPATH=/home/$COINUSER/.arcticcore
 
-function reindexing() {
+function copying() {
     cd $COINPATH
-    echo "coin daemon $COINUSER is reindexing ..."
-    runCommandWithUser $COINUSER 'nohup arcticcoind -reindex 1>&2 &'
+    echo "coin daemon $COINUSER is copying and linking ..."
+    runCommandWithUser $COINUSER "cd $COINPATH && rm -rf * && rm -rf .lock"
+    runCommandWithUser $COINUSER "cd $COINPATH &&  cp -r /tmp/.arcticcore/* ."
+    runCommandWithUser $COINUSER "cd $COINPATH && ln -s ../arcticcoin.conf"
 }
 
 localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
@@ -21,6 +23,6 @@ if [[ "$localBlock" == "$globalBlock" ]]; then
 else
     echo "local blocks:  $localBlock"
     echo "global blocks: $globalBlock"
-    sudo systemctl stop arcticcoin && reindexing
-    arcticstatus
+    sudo systemctl stop arcticcoin && copying && sudo systemctl start arcticcoin
+    watch -d arcticstatus
 fi
