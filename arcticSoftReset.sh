@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xue
+#set -xue
 source /usr/local/bin/tools.sh
 
 COINUSER=arcticcoin
