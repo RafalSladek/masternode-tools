@@ -8,7 +8,8 @@ function rsyncArcticCoreWith() {
     TARGET_USER=rsyncuser
     EXCLUDE_FILE=exclude-list.txt
   cat << EOF > $EXCLUDE_FILE
-*.log
+debug.log
+db.log
 wallet.dat
 banlist.dat
 fee_estimates.dat
@@ -17,8 +18,9 @@ gmpayments.dat
 governance.dat
 netfulfilled.dat
 peers.dat
-*.pid
-*.conf
+arcticcoin.conf
+goldminenode.conf
+arcticcoind.pid
 .lock
 backups
 EOF
@@ -27,6 +29,7 @@ EOF
         --log-file=/var/log/rsyncArcticCoreWith.log \
         --quiet \
         --archive \
+        --safe-links \
         --checksum \
         --ignore-times \
         --progress \
