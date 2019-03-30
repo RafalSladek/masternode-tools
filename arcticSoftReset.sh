@@ -25,7 +25,7 @@ function main(){
         echo "local blocks:  $localBlock"
         echo "global blocks: $globalBlock"
         sudo systemctl stop arcticcoin && copying && sudo systemctl start arcticcoin
-        watch -d arcticstatus
+        arcticstatus
     fi
 }
 
