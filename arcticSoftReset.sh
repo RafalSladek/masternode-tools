@@ -11,7 +11,7 @@ function copying() {
     echo "coin daemon $COINUSER is copying and linking ..."
     runCommandWithUser $COINUSER "cd $COINPATH && rm -rf * && rm -rf .lock"
     runCommandWithUser $COINUSER "cd $COINPATH && cp -r /tmp/.arcticcore/* ."
-    runCommandWithUser $COINUSER "cd $COINPATH && ln -s ../arcticcoin.conf"
+    runCommandWithUser $COINUSER "cd $COINPATH && rm -f arcticcoin.conf && ln -s ../arcticcoin.conf"
 }
 
 function main(){
