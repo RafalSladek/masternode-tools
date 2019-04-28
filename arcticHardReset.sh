@@ -2,7 +2,14 @@
 #set -xue
 source /usr/local/bin/tools.sh
 
-COINUSER=arcticcoin
+
+if [ -z "$1" ]
+then
+    COINUSER=arcticcoin
+else
+    COINUSER=$1
+fi
+
 COINEXPLORER=http://explorer.arcticcoin.org/api/getblockcount
 COINPATH=/home/$COINUSER/.arcticcore
 
@@ -11,7 +18,7 @@ function wipeArcticoinChain() {
     echo "deleting coinf files from $COINPATH in progress..."
     sudo rm -vf *.log *.dat .lock && \
     sudo rm -vrf backups blocks chainstate database && \
-    sudo systemctl start arcticcoin && \
+    sudo systemctl start $COINUSER && \
     echo "coin daemon $COINUSER is started ..."
 }
 
@@ -20,11 +27,11 @@ globalBlock=$(curl -sk "$COINEXPLORER")
 
 if [[ "$localBlock" == "$globalBlock" ]]; then
     echo "Yeee, your arcticcoin is in sync"
-    arcticstatus
+    arcticstatus $COINUSER
 else
     echo "local blocks:  $localBlock"
     echo "global blocks: $globalBlock"
-    sudo systemctl stop arcticcoin &&  wipeArcticoinChain
+    sudo systemctl stop $COINUSER &&  wipeArcticoinChain
     sleep 30
-    arcticstatus
+    arcticstatus $COINUSER
 fi

@@ -2,7 +2,13 @@
 #set -xue
 source /usr/local/bin/tools.sh
 
-COINUSER=arcticcoin
+if [ -z "$1" ]
+then
+    COINUSER=arcticcoin
+else
+    COINUSER=$1
+fi
+
 COINEXPLORER=http://explorer.arcticcoin.org/api/getblockcount
 COINPATH=/home/$COINUSER/.arcticcore
 
@@ -19,13 +25,13 @@ function main(){
     globalBlock=$(curl -sk "$COINEXPLORER")
     
     if [[ "$localBlock" == "$globalBlock" ]]; then
-        echo "Yeee, your arcticcoin is in sync"
-        arcticstatus
+        echo "Yeee, your $COINUSER is in sync"
+        arcticstatus $COINUSER
     else
         echo "local blocks:  $localBlock"
         echo "global blocks: $globalBlock"
-        sudo systemctl stop arcticcoin && copying && sudo systemctl start arcticcoin
-        arcticstatus
+        sudo systemctl stop $COINUSER && copying && sudo systemctl start $COINUSER
+        arcticstatus $COINUSER
     fi
 }
 

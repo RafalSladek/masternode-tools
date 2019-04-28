@@ -1,5 +1,11 @@
 #!/bin/bash
-COINUSER=arcticcoin
+if [ -z "$1" ]
+then
+    COINUSER=arcticcoin
+else
+    COINUSER=$1
+fi
+
 PUBLIC_IP=$(curl -s ipecho.net/plain)
 coinexplorerurl=http://explorer.arcticcoin.org/api/getblockcount
 highestBlock=$(curl -sk $coinexplorerurl)

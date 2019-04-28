@@ -2,7 +2,13 @@
 #set -xue
 source /usr/local/bin/tools.sh
 
-COINUSER=arcticcoin
+if [ -z "$1" ]
+then
+    COINUSER=arcticcoin
+else
+    COINUSER=$1
+fi
+
 SSHUSER=rsladek
 SSHCMD=arcticSoftReset.sh
 
