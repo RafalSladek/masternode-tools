@@ -10,14 +10,14 @@ function copying() {
     cd $COINPATH
     echo "coin daemon $COINUSER is copying and linking ..."
     runCommandWithUser $COINUSER "cd $COINPATH && rm -rf * && rm -rf .lock"
-    runCommandWithUser $COINUSER "cd $COINPATH && cp -r /tmp/.arcticcore/* ."
+    cd $COINPATH && cp -r /tmp/.arcticcore/* . && chown -R $COINUSER:$COINUSER $COINPATH
     runCommandWithUser $COINUSER "rm -f /home/$COINUSER/.arcticcore/arcticcoin.conf && cd $COINPATH && ln -s /home/$COINUSER/arcticcoin.conf"
 }
 
 function main(){
     localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
     globalBlock=$(curl -sk "$COINEXPLORER")
-
+    
     if [[ "$localBlock" == "$globalBlock" ]]; then
         echo "Yeee, your arcticcoin is in sync"
         arcticstatus
