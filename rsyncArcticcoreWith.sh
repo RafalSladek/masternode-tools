@@ -8,7 +8,7 @@ function rsyncArcticCoreWith() {
     TARGET_USER=rsyncuser
     EXCLUDE_FILE=exclude-list.txt
     INCLUDE_FILE=include-list.txt
-
+    
 cat << EOF > $EXCLUDE_FILE
 *wallet.dat*
 *.conf
@@ -25,7 +25,7 @@ backups*
 *netfulfilled.dat*
 *peers.dat*
 EOF
-
+    
 cat << EOF > $INCLUDE_FILE
 chainstate*
 blocks*
@@ -46,7 +46,7 @@ EOF
 }
 
 function main(){
-    ips=('81.169.223.222' '107.150.7.213')
+    ips=('81.169.223.222')
     for ip in "${ips[@]}"
     do
         echo "rsync starting for $ip ..."
