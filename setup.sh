@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xuo
+#set -xuo
 
 echo "setting up everthing ..."
 
