@@ -1,0 +1,3 @@
+#!/bin/bash
+COINUSER=zen
+sudo -u $COINUSER -H sh -c "zen-cli z_gettotalbalance"
