@@ -1,22 +1,10 @@
 #!/bin/bash
+#set -xe
 
-function rsyncZenWith() {
-    
-    SOURCE=/home/zen/.zen
-    TARGET=/tmp
-    TARGET_IP=$1
-    TARGET_USER=rsyncuser
+function prepareExcludeList() {
     EXCLUDE_FILE=exclude-list.txt
-    INCLUDE_FILE=include-list.txt
-    
 cat << EOF > $EXCLUDE_FILE
 *wallet.dat*
-*.conf
-debug.log
-db.log
-backups*
-.lock
-*.pid
 *banlist.dat*
 *fee_estimates.dat*
 *gmcache.dat*
@@ -24,15 +12,23 @@ backups*
 *gmpayments.dat*
 *netfulfilled.dat*
 *peers.dat*
+debug.log
+db.log
+backups*
+.lock
+*.pid
+*.conf
 EOF
-    
-cat << EOF > $INCLUDE_FILE
-chainstate*
-blocks*
-EOF
+}
+
+function rsync() {
+    sourcedir=$1
+    targetuser=rsyncuser
+    targetip=$2
+    targetdir=/tmp
     
     /usr/bin/rsync \
-    --log-file=/var/log/rsyncArcticCoreWith.log \
+    --log-file=rsync.log \
     --archive \
     --progress \
     --human-readable \
@@ -41,15 +37,16 @@ EOF
     --exclude-from=$EXCLUDE_FILE \
     --timeout=60 \
     -e "ssh" \
-    --rsync-path="sudo rsync" $SOURCE $TARGET_USER@${TARGET_IP}:$TARGET
+    --rsync-path="sudo rsync" $sourcedir $targetuser@$targetip:$targetdir
 }
 
 function main(){
-    ips=('164.68.100.115')
+    prepareExcludeList
+    ips=('81.169.223.222')
     for ip in "${ips[@]}"
     do
         echo "rsync starting for $ip ..."
-        rsyncZenWith $ip
+        rsync /home/zen/.zen $ip
     done
 }
 
