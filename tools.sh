@@ -16,3 +16,7 @@ function fail2banJailStatus() {
         echo "--------------- ... ---------------"
     done
 }
+
+function mypublicip(){
+    echo $(curl -s ifconfig.me/ip)
+}
