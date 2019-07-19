@@ -1,17 +1,18 @@
 #!/bin/bash
+#set -xe
 
-function getBalancesByAddress(){
+function getBalancesByAddress() {
     address=%1
     balance=$(zen-cli z_getbalance $address)
     echo "$address,$balance"
 }
 
-function main(){
+function main() {
     COINUSER=zen
     echo z_addresses
-    sudo -u $COINUSER -H sh -c "zen-cli z_listaddresses | jq '.[]' | xargs -I{} getBalancesByAddress {}"
+    sudo -u $COINUSER -H sh -c "zen-cli z_listaddresses | jq '.[]' | xargs -I{} sh -c 'getBalancesByAddress {}'"
     echo t_addresses
-    sudo -u $COINUSER -H sh -c "zen-cli listaddresses | jq '.[]' | xargs -I{} getBalancesByAddress {}"
+    sudo -u $COINUSER -H sh -c "zen-cli listaddresses | jq '.[]' | xargs -I{} sh -c 'getBalancesByAddress {}'"
 }
 
 main
