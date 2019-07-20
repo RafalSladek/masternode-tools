@@ -27,12 +27,12 @@ fi
 sentMetric $host $coin $metricname $success $role $username
 
 metricname="status"
-netinfo=$(zen-cli getnetworkinfo)
+netinfo=$($coincli getnetworkinfo)
 tlsVerified=$(echo $netinfo | jq -r .tls_cert_verified)
 nodePublicIp=$(echo $netinfo | jq -r .localaddresses[].address)
-myPublicIp=$(mypublicip)
+myPublicIp=mypublicip
 success=0
-if [[ 'true' == $tlsVerified ]] && [[ $myPublicIp == $nodePublicIp ]]; then
+if [ 'true' == $tlsVerified ] && [ $myPublicIp == $nodePublicIp ]; then
     success=1
 fi
 sentMetric $host $coin $metricname $success $role $username
