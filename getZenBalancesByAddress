@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source tools.sh
+
+function getZenBalancesByAddress() {
+    COINUSER=zen
+    address=%1
+    balance=$(runCommandWithUser $COINUSER "zen-cli z_getbalance $address")
+    echo "$address,$balance"
+}
+
+getZenBalancesByAddress %1 

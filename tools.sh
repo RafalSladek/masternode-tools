@@ -20,10 +20,3 @@ function fail2banJailStatus() {
 function mypublicip(){
     echo $(curl -s ifconfig.me/ip)
 }
-
-function getZenBalancesByAddress() {
-    COINUSER=zen
-    address=%1
-    balance=$(runCommandWithUser $COINUSER "zen-cli z_getbalance $address")
-    echo "$address,$balance"
-}
