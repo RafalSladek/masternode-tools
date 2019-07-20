@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo systemctl restart zend \
+&& sleep 30 \
+&& sudo systemctl restart zentracker \
+&& sudo journalctl -fu zentracker zend
