@@ -17,3 +17,5 @@ do
 done
 
 cd $TARGETPATH && ls -lhaF | grep ^l
+
+source /usr/local/bin/tools.sh
