@@ -24,5 +24,5 @@ function fail2banJailStatus() {
 }
 
 function mypublicip(){
-    echo -e "${RED}$(curl -s ifconfig.me/ip)${NC}"
+    curl -s ipecho.net/plain
 }
