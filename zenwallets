@@ -5,11 +5,11 @@ source tools.sh
 
 function main() {
     COINUSER=zen
-    echo -e "${GREEN}z_addresses${NC}"
+    echo -e "${BLUE}z_addresses${NC}"
     runCommandWithUser $COINUSER "zen-cli z_listaddresses | jq '.[]' | xargs -I{} getZenBalancesByAddress {}"
     
     echo
-    echo -e "${GREEN}t_addresses${NC}"
+    echo -e "${CYAN}t_addresses${NC}"
     runCommandWithUser $COINUSER "zen-cli listaddresses | jq '.[]' | xargs -I{} getZenBalancesByAddress {}"
 }
 

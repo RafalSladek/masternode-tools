@@ -1,9 +1,11 @@
 #!/bin/bash
 #set -xe
+NC='\033[0m' # no color, reset
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-NC='\033[0m'
+CYAN='\033[0;36m'
+BLUE='\033[0;34m'
 
 function runCommandWithUser() {
     COINUSER=$1
