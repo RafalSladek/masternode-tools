@@ -22,7 +22,8 @@ function mypublicip(){
 }
 
 function getZenBalancesByAddress() {
+    COINUSER=zen
     address=%1
-    balance=$(zen-cli z_getbalance $address)
+    balance=$(runCommandWithUser $COINUSER "zen-cli z_getbalance $address")
     echo "$address,$balance"
 }
