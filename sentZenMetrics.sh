@@ -1,6 +1,7 @@
 #!/bin/bash
 #set -xe
 source /usr/local/bin/ddhelper.sh
+source /usr/local/bin/tools.sh
 
 host=$(hostname)
 coin="zen"
@@ -26,9 +27,12 @@ fi
 sentMetric $host $coin $metricname $success $role $username
 
 metricname="status"
-value=$(/usr/bin/$coincli getnetworkinfo | /bin/grep tls_cert_verified | /usr/bin/awk -F' ' '{printf "%s",$2}' | /usr/bin/tr -d ",")
+netinfo=$(zen-cli getnetworkinfo)
+tlsVerified=$(echo $netinfo | jq -r .tls_cert_verified)
+nodePublicIp=$(echo $netinfo | jq -r .localaddresses[].address)
+myPublicIp=$(mypublicip)
 success=0
-if [[ 'true' == $value ]]; then
+if [[ 'true' == $tlsVerified ]] && [[ $myPublicIp == $nodePublicIp ]]; then
     success=1
 fi
 sentMetric $host $coin $metricname $success $role $username
