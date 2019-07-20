@@ -1,6 +1,8 @@
 #!/bin/bash
 #set -xe
 
+source tools.sh
+
 function prepareExcludeList() {
     EXCLUDE_FILE=exclude-list.txt
 cat << EOF > $EXCLUDE_FILE
@@ -45,7 +47,7 @@ function main(){
     ips=('81.169.223.222')
     for ip in "${ips[@]}"
     do
-        echo "rsync starting for $ip ..."
+        echo -e "${GREE}rsync starting for $ip ...${NC}"
         rsync /home/zen/.zen $ip
     done
 }

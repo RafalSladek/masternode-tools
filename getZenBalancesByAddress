@@ -5,9 +5,8 @@ source tools.sh
 function getZenBalancesByAddress() {
     COINUSER=zen
     address=$1
-    echo "checking $COINUSER balance for $address"
     balance=$(runCommandWithUser $COINUSER "zen-cli z_getbalance $address")
-    echo "$address,$balance"
+    echo -e "${GREEN}$address,${RED}$balance${NC}"
 }
 
 getZenBalancesByAddress $1

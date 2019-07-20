@@ -1,3 +1,4 @@
 #!/bin/bash
+source tools.sh
 COINUSER=zen
-sudo -u $COINUSER -H sh -c "zen-cli z_gettotalbalance"
+runCommandWithUser $COINUSER "zen-cli z_gettotalbalance"
