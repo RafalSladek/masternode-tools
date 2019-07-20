@@ -6,9 +6,9 @@ source tools.sh
 function main() {
     COINUSER=zen
     echo z_addresses
-    sudo -u $COINUSER -H sh -c "zen-cli z_listaddresses | jq '.[]' | xargs -I{} getZenBalancesByAddress {}"
+    runCommandWithUser $COINUSER "zen-cli z_listaddresses | jq '.[]' | xargs -I{} getZenBalancesByAddress {}"
     echo t_addresses
-    sudo -u $COINUSER -H sh -c "zen-cli listaddresses | jq '.[]' | xargs -I{} getZenBalancesByAddress {}"
+    runCommandWithUser $COINUSER "zen-cli listaddresses | jq '.[]' | xargs -I{} getZenBalancesByAddress {}"
 }
 
 main
