@@ -9,6 +9,7 @@ role="securenode"
 username=$(whoami)
 coindaemon="zend"
 coincli="zen-cli"
+myPublicIp=$(mypublicip)
 
 metricname="blocks"
 value=$(/usr/bin/$coincli getblockcount)
@@ -19,18 +20,21 @@ value=$(/usr/bin/$coincli getconnectioncount)
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="enabled"
-value=$(/usr/bin/curl --silent "https://$zensystembaseurl/api/nodes/$zensystemnodeid/detail?key=$ZEN_SYSTEM_API_KEY" 2>&1 |  jq '.["status"]' | sed "s/\"//g")
+apiInfo=$(/usr/bin/curl --silent "https://$zensystembaseurl/api/nodes/$zensystemnodeid/detail?key=$ZEN_SYSTEM_API_KEY")
+status=$(echo $apiInfo | jq -r .status)
+nodeIp4=$(echo $apiInfo | jq -r .ip4)
+nodefqdn=$(echo $apiInfo | jq -r .fqdn)
+
 success=0
-if [[ 'up' == $value ]]; then
+if [ 'up' == $status ] && [ $myPublicIp == $nodeIp4 ] && [ $nodefqdn == $FQDN ]; then
     success=1
 fi
 sentMetric $host $coin $metricname $success $role $username
 
 metricname="status"
-netinfo=$($coincli getnetworkinfo)
+netinfo=$(/usr/bin/$coincli getnetworkinfo)
 tlsVerified=$(echo $netinfo | jq -r .tls_cert_verified)
 nodePublicIp=$(echo $netinfo | jq -r .localaddresses[].address)
-myPublicIp=mypublicip
 success=0
 if [ 'true' == $tlsVerified ] && [ $myPublicIp == $nodePublicIp ]; then
     success=1
