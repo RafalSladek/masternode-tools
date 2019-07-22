@@ -1,21 +1,20 @@
 #!/bin/bash
-
 if [ -z "$1" ]
 then
-    COIN=arcticcoin
+    COIN=zen
 else
     COIN=$1
 fi
 
-COINDIR=.arcticcore
-COINSTATUSCMD=arcticstatus
+COINDIR=.zen
+COINSTATUSCMD=zenstatus
 
 echo stoping service $COIN ...
 systemctl stop $COIN
 
-echo removing old files from :
+echo removing old files
 rm -rvf /home/$COIN/$COINDIR/{blocks,chainstate,backups,database}
-rm -rvf /home/$COIN/$COINDIR/{goldminenode.conf,*.log,.lock,*.dat,*.pid}
+rm -rvf /home/$COIN/$COINDIR/{*.log,.lock,fee_estimates.dat,peers.dat}
 
 echo dir after deletion
 ls -alh /home/$COIN/$COINDIR/
