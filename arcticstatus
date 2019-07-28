@@ -9,4 +9,4 @@ fi
 PUBLIC_IP=$(curl -s ipecho.net/plain)
 coinexplorerurl=http://explorer.arcticcoin.org/api/getblockcount
 highestBlock=$(curl -sk $coinexplorerurl)
-sudo -u $COINUSER -H sh -c "echo '{ \"timestamp\": \"`date`\",  \"highestBlock\": \"$highestBlock\", \"details\": ['; arcticcoin-cli goldminenode status; echo ','; arcticcoin-cli getinfo; echo ',' ; arcticcoin-cli mnsync status ; echo ','; arcticcoin-cli goldminenode list full $PUBLIC_IP; echo ']}'"
+sudo -u $COINUSER -H sh -c "echo '{ \"timestamp\": \"`date`\",  \"highestBlock\": \"$highestBlock\", \"details\": ['; arcticcoin-cli goldminenode status; echo ','; arcticcoin-cli getinfo; echo ',' ; arcticcoin-cli mnsync status ; echo ','; arcticcoin-cli goldminenode list full $PUBLIC_IP; echo ']}'" | jq .

@@ -3,4 +3,4 @@ COINUSER=zen
 PUBLIC_IP=$(curl -s ipecho.net/plain)
 coinexplorerurl=https://explorer.horizen.global/insight-api-zen/sync
 highestBlock=$(curl -sk $coinexplorerurl | jq .blockChainHeight)
-sudo -u $COINUSER -H sh -c "echo '{ \"timestamp\": \"`date`\",  \"highestBlock\": \"$highestBlock\",  \"details\": ['; zen-cli getnetworkinfo; echo ','; zen-cli getinfo; echo ','; zen-cli z_gettotalbalance; echo ']}'"
+sudo -u $COINUSER -H sh -c "echo '{ \"timestamp\": \"`date`\",  \"highestBlock\": \"$highestBlock\",  \"details\": ['; zen-cli getnetworkinfo; echo ','; zen-cli getinfo; echo ','; zen-cli z_gettotalbalance; echo ']}'" | jq .
