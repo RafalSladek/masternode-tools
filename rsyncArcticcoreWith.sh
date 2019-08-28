@@ -46,7 +46,7 @@ EOF
 }
 
 function main(){
-    ips=('81.169.223.222')
+    ips=('164.68.100.115')
     for ip in "${ips[@]}"
     do
         echo "rsync starting for $ip ..."
