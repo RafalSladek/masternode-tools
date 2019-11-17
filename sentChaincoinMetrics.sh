@@ -11,7 +11,6 @@ coindaemon="chaincoind"
 coincli="chaincoin-cli"
 publicIp=$(mypublicip)
 coinexplorerurl=https://api.chaincoinexplorer.co.uk/getBlockchainInfo
-highestBlock=$(curl -sk $coinexplorerurl | jq .blocks)
 
 metricname="node.highestblock"
 value=$(/usr/local/bin/$coincli getblockcount)
@@ -38,5 +37,6 @@ fi
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="explorer.highestblock"
+highestBlock=$(curl -sk $coinexplorerurl | jq .blocks)
 value=$highestBlock
 sentMetric $host $coin $metricname $value $role $username

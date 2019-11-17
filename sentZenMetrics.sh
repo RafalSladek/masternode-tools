@@ -11,7 +11,6 @@ coindaemon="zend"
 coincli="zen-cli"
 publicIp=$(mypublicip)
 coinexplorerurl=https://explorer.horizen.global/insight-api-zen/sync
-highestBlock=$(curl -sk $coinexplorerurl | jq .blockChainHeight)
 
 metricname="node.highestblock"
 value=$(/usr/bin/$coincli getblockcount)
@@ -43,5 +42,6 @@ fi
 sentMetric $host $coin $metricname $success $role $username
 
 metricname="explorer.highestblock"
+highestBlock=$(curl -sk $coinexplorerurl | jq .blockChainHeight)
 value=$highestBlock
 sentMetric $host $coin $metricname $value $role $username

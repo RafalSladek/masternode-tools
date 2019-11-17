@@ -11,7 +11,6 @@ coindaemon="arcticcoind"
 coincli="arcticcoin-cli"
 publicIp=$(mypublicip)
 coinexplorerurl=http://explorer.advtech.group/api/getblockcount
-highestBlock=$(curl -sk $coinexplorerurl)
 
 metricname="node.highestblock"
 value=$(/usr/local/bin/$coincli getblockcount)
@@ -34,5 +33,6 @@ fi
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="explorer.highestblock"
+highestBlock=$(curl -sk $coinexplorerurl)
 value=$highestBlock
 sentMetric $host $coin $metricname $value $role $username
