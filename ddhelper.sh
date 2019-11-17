@@ -30,6 +30,7 @@ function sentEvent() {
                         if [ -z "$6" ]
                         then
                             echo "ERROR: Please specify the username as the sixth argument."
+                            exit -1
                         else
                             if [ -z "$7" ]
                             then
@@ -86,6 +87,7 @@ function sentMetric() {
                         if [ -z "$6" ]
                         then
                             echo "ERROR: Please specify the username as the sixth argument."
+                            exit -1
                         else
                             currenttime=$(/bin/date +%s)
                             /usr/bin/curl --silent -X POST -H "Content-type: application/json" \
