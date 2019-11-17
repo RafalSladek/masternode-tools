@@ -13,7 +13,7 @@ publicIp=$(mypublicip)
 coinexplorerurl=https://explorer.horizen.global/insight-api-zen/sync
 highestBlock=$(curl -sk $coinexplorerurl | jq .blockChainHeight)
 
-metricname="node.blocks"
+metricname="node.highestblock"
 value=$(/usr/bin/$coincli getblockcount)
 sentMetric $host $coin $metricname $value $role $username
 
@@ -42,6 +42,6 @@ if [ 'true' == $tlsVerified ] && [ $publicIp == $nodePublicIp ]; then
 fi
 sentMetric $host $coin $metricname $success $role $username
 
-metricname="explorer.blocks"
+metricname="explorer.highestblock"
 value=$highestBlock
 sentMetric $host $coin $metricname $value $role $username

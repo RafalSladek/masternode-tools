@@ -10,7 +10,7 @@ coindaemon="cropcoind"
 coincli=""
 publicIp=$(mypublicip)
 
-metricname="node.blocks"
+metricname="node.highestblock"
 value=$(/usr/local/bin/$coindaemon getblockcount)
 sentMetric $host $coin $metricname $value $role $username
 

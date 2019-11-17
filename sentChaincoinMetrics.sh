@@ -12,7 +12,7 @@ publicIp=$(mypublicip)
 coinexplorerurl=https://api.chaincoinexplorer.co.uk/getBlockchainInfo
 highestBlock=$(curl -sk $coinexplorerurl | jq .blocks)
 
-metricname="node.blocks"
+metricname="node.highestblock"
 value=$(/usr/local/bin/$coincli getblockcount)
 sentMetric $host $coin $metricname $value $role $username
 
@@ -36,6 +36,6 @@ if [ '999' == $status ]; then
 fi
 sentMetric $host $coin $metricname $value $role $username
 
-metricname="explorer.blocks"
+metricname="explorer.highestblock"
 value=$highestBlock
 sentMetric $host $coin $metricname $value $role $username

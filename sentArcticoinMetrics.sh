@@ -12,7 +12,7 @@ publicIp=$(mypublicip)
 coinexplorerurl=http://explorer.advtech.group/api/getblockcount
 highestBlock=$(curl -sk $coinexplorerurl)
 
-metricname="node.blocks"
+metricname="node.highestblock"
 value=$(/usr/local/bin/$coincli getblockcount)
 sentMetric $host $coin $metricname $value $role $username
 
@@ -32,6 +32,6 @@ if [[ 'Goldminenode successfully started' == $status ]]; then
 fi
 sentMetric $host $coin $metricname $value $role $username
 
-metricname="explorer.blocks"
+metricname="explorer.highestblock"
 value=$highestBlock
 sentMetric $host $coin $metricname $value $role $username
