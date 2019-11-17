@@ -24,13 +24,13 @@ sentMetric $host $coin $metricname $value $role $username
 metricname="node.active"
 status=$(/usr/local/bin/$coincli masternode list json $publicIp | jq .[].status)
 value=0
-if [ 'ENABLED' == $status ]; then
+if [ '"ENABLED"' == $status ]; then
     value=1
 fi
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="node.status"
-value=$(/usr/local/bin/$coincli mnsync status | jq .AssetID)
+status=$(/usr/local/bin/$coincli mnsync status | jq .AssetID)
 value=0
 if [ '999' == $status ]; then
     value=1
