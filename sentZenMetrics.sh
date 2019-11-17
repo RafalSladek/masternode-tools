@@ -21,7 +21,7 @@ metricname="node.connections"
 value=$(/usr/bin/$coincli getconnectioncount)
 sentMetric $host $coin $metricname $value $role $username
 
-metricname="node.enabled"
+metricname="node.active"
 apiInfo=$(/usr/bin/curl --silent "https://$zensystembaseurl/api/nodes/$zensystemnodeid/detail?key=$ZEN_SYSTEM_API_KEY")
 status=$(echo $apiInfo | jq -r .status)
 nodeIp4=$(echo $apiInfo | jq -r .ip4)

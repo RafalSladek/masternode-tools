@@ -20,7 +20,7 @@ metricname="node.connections"
 value=$(/usr/local/bin/$coincli getconnectioncount)
 sentMetric $host $coin $metricname $value $role $username
 
-metricname="node.enabled"
+metricname="node.active"
 status=$(/usr/local/bin/$coincli masternode list json $publicIp | jq .[].status)
 value=0
 if [ 'ENABLED' == $status ]; then

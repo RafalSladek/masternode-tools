@@ -20,7 +20,7 @@ metricname="node.connections"
 value=$(/usr/local/bin/$coincli getconnectioncount)
 sentMetric $host $coin $metricname $value $role $username
 
-metricname="node.enabled"
+metricname="node.active"
 value=$(/usr/local/bin/$coincli goldminenode list full $publicip | /bin/grep -w ENABLED | /bin/grep -v PRE-ENABLED | /usr/bin/wc -l)
 sentMetric $host $coin $metricname $value $role $username
 
