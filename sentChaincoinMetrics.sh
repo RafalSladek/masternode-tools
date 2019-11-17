@@ -24,4 +24,8 @@ sentMetric $host $coin $metricname $value $role $username
 
 metricname="status"
 value=$(/usr/local/bin/$coincli mnsync status | /bin/grep AssetID | /usr/bin/awk -F' ' '{printf "%s",$2}' | /usr/bin/tr -d ",")
+success=0
+if [ '999' == $value ]; then
+    success=1
+fi
 sentMetric $host $coin $metricname $value $role $username

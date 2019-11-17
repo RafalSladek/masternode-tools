@@ -24,4 +24,8 @@ sentMetric $host $coin $metricname $value $role $username
 
 metricname="status"
 value=$(/usr/local/bin/$coindaemon masternode status | /bin/grep status | /usr/bin/awk -F' ' '{printf "%s",$3}' | /usr/bin/tr -d ",")
+success=0
+if [ '9' == $value ]; then
+    success=1
+fi
 sentMetric $host $coin $metricname $value $role $username
