@@ -28,4 +28,4 @@ success=0
 if [ '999' == $value ]; then
     success=1
 fi
-sentMetric $host $coin $metricname $value $role $username
+sentMetric $host $coin $metricname $success $role $username

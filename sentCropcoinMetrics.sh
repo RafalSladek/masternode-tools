@@ -28,4 +28,4 @@ success=0
 if [ '9' == $value ]; then
     success=1
 fi
-sentMetric $host $coin $metricname $value $role $username
+sentMetric $host $coin $metricname $success $role $username
