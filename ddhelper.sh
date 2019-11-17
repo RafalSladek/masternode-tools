@@ -91,7 +91,7 @@ function sentMetric() {
                             /usr/bin/curl --silent -X POST -H "Content-type: application/json" \
                             -d "{ \"series\" :
                             [{
-                                    \"metric\":\"$5.$3\",
+                                    \"metric\":\"$3\",
                                     \"points\":[[$currenttime, $4]],
                                     \"type\":\"gauge\",
                                     \"host\":\"$1\",
