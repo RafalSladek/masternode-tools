@@ -28,7 +28,7 @@ nodeIp4=$(echo $apiInfo | jq -r .ip4)
 nodefqdn=$(echo $apiInfo | jq -r .fqdn)
 value=0
 if [ 'up' == $status ] && [ $publicIp == $nodeIp4 ] && [ $nodefqdn == $FQDN ]; then
-    succvalueess=1
+    value=1
 fi
 sentMetric $host $coin $metricname $value $role $username
 
