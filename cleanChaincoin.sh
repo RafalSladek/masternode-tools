@@ -14,8 +14,8 @@ echo stoping service $COIN ...
 systemctl stop $COIN
 
 echo removing old files from :
-rm -rvf /home/$USER/$COINDIR/{blocks,chainstate,backups,database}
-rm -rvf /home/$USER/$COINDIR/{*.conf,*.log,.lock,*.dat,*.pid}
+rm -rvf /home/$USER/$COINDIR/{blocks,chainstate,backups,database,indexes}
+rm -rvf /home/$USER/$COINDIR/{*.conf,*.log,.lock,*.dat,*.pid,.walletlock}
 
 echo dir after deletion
 pushd /home/$USER/$COINDIR/ && ln -s ../$COIN.conf && popd
