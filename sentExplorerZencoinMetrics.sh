@@ -4,7 +4,7 @@ source /usr/local/bin/ddhelper.sh
 
 host=$(hostname)
 coin="zen"
-role="masternode"
+role="securenode"
 username=$(whoami)
 coinexplorerurl=https://explorer.horizen.global/insight-api-zen/sync
 
