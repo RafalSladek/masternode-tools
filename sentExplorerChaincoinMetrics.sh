@@ -1,9 +1,9 @@
 #!/bin/bash
-set -xe
+#set -xe
 source /usr/local/bin/ddhelper.sh
 
 host=$(hostname)
-coin="chc"
+coin="chaincoin"
 role="masternode"
 username=$(whoami)
 coinexplorerurl=https://api.chaincoinexplorer.co.uk/getBlockchainInfo
