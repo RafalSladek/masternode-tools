@@ -1,6 +1,7 @@
 #!/bin/bash
 #set -xe
 source /usr/local/bin/ddhelper.sh
+source /usr/local/bin/tools.sh
 
 host=$(hostname)
 coin="chaincoin"
