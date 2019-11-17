@@ -8,6 +8,9 @@ role="masternode"
 username=$(whoami)
 coindaemon="chaincoind"
 coincli="chaincoin-cli"
+publicIp=$(mypublicip)
+coinexplorerurl=https://api.chaincoinexplorer.co.uk/getBlockchainInfo
+highestBlock=$(curl -sk $coinexplorerurl | jq .blocks)
 
 metricname="node.blocks"
 value=$(/usr/local/bin/$coincli getblockcount)
@@ -18,14 +21,21 @@ value=$(/usr/local/bin/$coincli getconnectioncount)
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="node.enabled"
-pubilcip=$(curl -s ipecho.net/plain)
-value=$(/usr/local/bin/$coincli masternode list full | /bin/grep $pubilcip | /bin/grep -w ENABLED | /usr/bin/wc -l)
+status=$(/usr/local/bin/$coincli masternode list json $publicIp | jq .[].status)
+value=0
+if [ 'ENABLED' == $status ]; then
+    value=1
+fi
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="node.status"
-value=$(/usr/local/bin/$coincli mnsync status | /bin/grep AssetID | /usr/bin/awk -F' ' '{printf "%s",$2}' | /usr/bin/tr -d ",")
-success=0
-if [ '999' == $value ]; then
-    success=1
+value=$(/usr/local/bin/$coincli mnsync status | jq .AssetID)
+value=0
+if [ '999' == $status ]; then
+    value=1
 fi
-sentMetric $host $coin $metricname $success $role $username
+sentMetric $host $coin $metricname $value $role $username
+
+metricname="explorer.blocks"
+value=$highestBlock
+sentMetric $host $coin $metricname $value $role $username
