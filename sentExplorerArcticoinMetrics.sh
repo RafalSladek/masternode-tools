@@ -6,7 +6,7 @@ host=$(hostname)
 coin="arcticcoin"
 role="masternode"
 username=$(whoami)
-coinexplorerurl=http://explorer.arcticcoin.org/api/getblockcount
+coinexplorerurl=http://explorer.advtech.group/api/getblockcount
 
 highestBlock=$(curl -sk $coinexplorerurl)
 metricname="explorer.blocks"
