@@ -29,9 +29,9 @@ fi
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="node.status"
-status=$(/usr/local/bin/$coincli mnsync status | jq .AssetID)
+status=$(/usr/local/bin/$coincli mnsync status | jq .IsSynced)
 value=0
-if [ '999' == $status ]; then
+if [ 'true' == $status ]; then
     value=1
 fi
 sentMetric $host $coin $metricname $value $role $username

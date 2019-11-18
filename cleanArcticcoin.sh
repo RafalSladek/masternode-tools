@@ -7,7 +7,7 @@ else
     COIN=$1
 fi
 USER=$COIN
-COINDIR=.arcticcore
+COINDIR=.arc
 COINSTATUSCMD=arcticstatus
 
 echo stoping service $COIN ...

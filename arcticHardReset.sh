@@ -10,8 +10,8 @@ else
     COINUSER=$1
 fi
 
-COINEXPLORER=http://explorer.arcticcoin.org/api/getblockcount
-COINPATH=/home/$COINUSER/.arcticcore
+COINEXPLORER=http://explorer.advtech.group/api/getblockcount
+COINPATH=/home/$COINUSER/.arc
 
 function wipeArcticoinChain() {
     cd $COINPATH
@@ -22,7 +22,7 @@ function wipeArcticoinChain() {
     echo "coin daemon $COINUSER is started ..."
 }
 
-localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
+localBlock=$(runCommandWithUser $COINUSER 'arc-cli getblockcount')
 globalBlock=$(curl -sk "$COINEXPLORER")
 
 if [[ "$localBlock" == "$globalBlock" ]]; then

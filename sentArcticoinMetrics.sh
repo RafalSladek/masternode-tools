@@ -7,8 +7,8 @@ host=$(hostname)
 coin="arcticcoin"
 role="masternode"
 username=$(whoami)
-coindaemon="arcticcoind"
-coincli="arcticcoin-cli"
+coindaemon="arcd"
+coincli="arc-cli"
 publicIp=$(mypublicip)
 coinexplorerurl=http://explorer.advtech.group/api/getblockcount
 
@@ -25,9 +25,9 @@ value=$(/usr/local/bin/$coincli goldminenode list full $publicip | /bin/grep -w 
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="node.status"
-status=$(/usr/local/bin/$coincli goldminenode status | /bin/grep status | /usr/bin/awk -F'"' '{printf "%s",$4}' | /usr/bin/tr -d ",")
+status=$(/usr/local/bin/$coincli mnsync status | jq .IsSynced)
 value=0
-if [[ 'Goldminenode successfully started' == $status ]]; then
+if [ 'true' == $status ]; then
     value=1
 fi
 sentMetric $host $coin $metricname $value $role $username

@@ -2,7 +2,7 @@
 
 function rsyncArcticCoreWith() {
     
-    SOURCE=/home/arcticcoin/.arcticcore
+    SOURCE=/home/arcticcoin/.arc
     TARGET=/tmp
     TARGET_IP=$1
     TARGET_USER=rsyncuser

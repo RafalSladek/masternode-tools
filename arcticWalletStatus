@@ -9,19 +9,19 @@ else
     COINUSER=$1
 fi
 
-COINEXPLORER=http://explorer.arcticcoin.org/api/getblockcount
+COINEXPLORER=http://explorer.advtech.group/api/getblockcount
 highestBlock=$(curl -sk $COINEXPLORER)
 
 function main(){
-    localBlock=$(runCommandWithUser $COINUSER 'arcticcoin-cli getblockcount')
+    localBlock=$(runCommandWithUser $COINUSER 'arc-cli getblockcount')
     echo "local blocks:  $localBlock"
     globalBlock=$(curl -sk "$COINEXPLORER")
     echo "global blocks: $globalBlock"
     
     if [[ "$localBlock" == "$globalBlock" ]]; then
         echo "Yeee, your $COINUSER is in sync"
-        runCommandWithUser $COINUSER 'arcticcoin-cli goldminenode list-conf'
-        runCommandWithUser $COINUSER 'arcticcoin-cli getinfo'
+        runCommandWithUser $COINUSER 'arc-cli goldminenode list-conf'
+        runCommandWithUser $COINUSER 'arc-cli getinfo'
     else
         echo "Local $COINUSER is OUT of sync. PLEASE RESET"
         return -1
