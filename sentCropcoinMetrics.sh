@@ -20,13 +20,13 @@ value=$(/usr/local/bin/$coindaemon getconnectioncount)
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="node.active"
-value=$(/usr/local/bin/$coindaemon masternode list full | /bin/grep $publicIp | /bin/grep -w ENABLED | /usr/bin/wc -l)
+value=$(/usr/local/bin/$coindaemon masternode list full $publicIp | jq .[] | /bin/grep -w ENABLED | /usr/bin/wc -l)
 sentMetric $host $coin $metricname $value $role $username
 
 metricname="node.status"
 status=$(/usr/local/bin/$coindaemon masternode status | jq .status)
 value=0
-if [ '9' == $status ]; then
-    value=0
+if [[ '9' == $status ]]; then
+    value=1
 fi
 sentMetric $host $coin $metricname $value $role $username
