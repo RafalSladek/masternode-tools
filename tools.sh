@@ -24,5 +24,5 @@ function fail2banJailStatus() {
 }
 
 function mypublicip(){
-    curl -s ipecho.net/plain
+    dig +short myip.opendns.com @resolver1.opendns.com
 }
