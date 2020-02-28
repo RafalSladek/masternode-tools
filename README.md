@@ -44,3 +44,8 @@ sentMetric $host $coin $title $message $role $username <alert_type>
    `walletnotify=/usr/local/bin/walletnotifyCROP %s`
 3. for daemon alerts use
    `alertnotify=/usr/local/bin/alertnotifyCROP %s`
+
+## Horizen - security node
+
+- official howto setup node - https://horizenofficial.atlassian.net/wiki/spaces/ZEN/pages/136872139/Installation
+- botstrap blockchain - https://bootstraps.ultimatenodes.io/horizen/masternode/
