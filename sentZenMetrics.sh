@@ -26,7 +26,7 @@ status=$(echo $apiInfo | jq -r .status)
 nodeIp4=$(echo $apiInfo | jq -r .ip4)
 nodefqdn=$(echo $apiInfo | jq -r .fqdn)
 value=0
-if [ 'up' == $status ] && [ $publicIp == $nodeIp4 ] && [ $nodefqdn == $FQDN ]; then
+if [ 'up' == "$status" ] && [ "$publicIp" == "$nodeIp4" ] && [ "$nodefqdn" == "$FQDN" ]; then
     value=1
 fi
 sentMetric $host $coin $metricname $value $role $username
@@ -36,7 +36,7 @@ netinfo=$(/usr/bin/$coincli getnetworkinfo)
 tlsVerified=$(echo $netinfo | jq -r .tls_cert_verified)
 nodePublicIp=$(echo $netinfo | jq -r .localaddresses[].address)
 success=0
-if [ 'true' == $tlsVerified ] && [ $publicIp == $nodePublicIp ]; then
+if [ 'true' == "$tlsVerified" ] && [ "$publicIp" == "$nodePublicIp" ]; then
     success=1
 fi
 sentMetric $host $coin $metricname $success $role $username
