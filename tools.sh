@@ -26,7 +26,7 @@ function fail2banJailStatus() {
 function mypublicip(){
     ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
     if [ -z "$ip" ]; then
-       ip=$(curl -s ipecho.net/plain)
+       ip=$(curl -s ipinfo.io/ip)
     fi
     echo $ip
 }
