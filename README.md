@@ -36,16 +36,3 @@ source /usr/local/bin/ddhelper.sh
 // alert_type is option, default is info
 sentMetric $host $coin $title $message $role $username <alert_type>
 ```
-
-## How to use wallet|alert notify script
-
-1. edit your coin config file
-2. for wallet transactions use
-   `walletnotify=/usr/local/bin/walletnotifyCROP %s`
-3. for daemon alerts use
-   `alertnotify=/usr/local/bin/alertnotifyCROP %s`
-
-## Horizen - security node
-
-- official howto setup node - https://horizenofficial.atlassian.net/wiki/spaces/ZEN/pages/136872139/Installation
-- botstrap blockchain - https://bootstraps.ultimatenodes.io/horizen/masternode/

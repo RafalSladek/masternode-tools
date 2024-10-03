@@ -1,6 +1,0 @@
-#!/bin/bash
-COINUSER=cropcoin
-PORT=17720
-
-PUBLIC_IP=$(curl -s ipecho.net/plain)
-sudo -u $COINUSER -H sh -c "echo '{ \"timestamp\": \"`date`\", \"details\": ['; cropcoind masternode status; echo ','; cropcoind getinfo; echo ','; cropcoind masternode list full $PUBLIC_IP:$PORT; echo ']}'"  | jq .

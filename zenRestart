@@ -1,5 +1,0 @@
-#!/bin/bash
-
-sudo systemctl restart zen \
-&& sleep 30 \
-&& sudo systemctl restart zentracker
