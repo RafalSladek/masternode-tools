@@ -1,42 +1,36 @@
 #!/bin/bash
-#set -xuo
+set -xu
 
-echo "setting up everthing ..."
+echo "setting up everything ..."
 
 SCRIPT=$(readlink -f "$0")
-SCRIPTPATH=$(dirname "$SCRIPT")
+SOURCEPATH=$(dirname "$SCRIPT")
 TARGETPATH=/usr/local/bin
 
-
-
-for i in `ls -l | awk '{ if ( $1 ~ /x/ ) {print $NF}}'`;
-do
-    if [ -x $i ]
-    then
-        rm -rf $TARGETPATH/$i && echo "removed old $TARGETPATH/$i"
-        ln -s $SCRIPTPATH/$i $TARGETPATH/$i && echo "linked new $SCRIPTPATH/$i"
+# list all executable scripts recursively and create new links
+find "$SOURCEPATH" -type f -executable -not -path "*.git*" -not -path "*/datadog-dashboards"  | while read -r script; do
+    script_name=$(basename "$script")
+    
+    # Remove old link if it exists
+    if [ -L "$TARGETPATH/$script_name" ]; then
+        rm -rf "$TARGETPATH/$script_name" && echo "removed old $TARGETPATH/$script_name"
     fi
+    # Create new symlink
+    ln -s "$script" "$TARGETPATH/$script_name" && echo "linked new $script to $TARGETPATH/$script_name"
 done
 
-cd zen
+cd "$TARGETPATH" || exit
 
-for i in `ls -l | awk '{ if ( $1 ~ /x/ ) {print $NF}}'`;
-do
-    if [ -x $i ]
-    then
-        rm -rf $TARGETPATH/$i && echo "removed old $TARGETPATH/$i"
-        ln -s $SCRIPTPATH/$i $TARGETPATH/$i && echo "linked new $SCRIPTPATH/$i"
-    fi
-done
-
-cd $TARGETPATH
 echo "deleting invalid links..."
 find . -xtype l -exec rm {} \;
 
 echo "verify deletion of invalid links"
 find . -xtype l
 
-echo "list of exisintg links.."
+echo "list of existing links.."
 ls -lhaF | grep ^l
 
+# run tools setup
 source /usr/local/bin/tools.sh
+
+ls -al $TARGETPATH
