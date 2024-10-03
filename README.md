@@ -36,3 +36,11 @@ source /usr/local/bin/ddhelper.sh
 // alert_type is option, default is info
 sentMetric $host $coin $title $message $role $username <alert_type>
 ```
+
+## How to setup forge node
+
+1. https://github.com/HorizenOfficial/compose-evm-simplified/blob/main/docs/FORGER.md
+2. https://github.com/HorizenOfficial/eon-smart-contract-tools
+3. https://remix.ethereum.org/#source=post_page-----2f0ac541130c--------------------------------&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.25+commit.b61c2a91.js
+4. https://gitlab.com/Kryptoroger/eon-smart-contract-tools
+5. https://eon-explorer.horizenlabs.io/
