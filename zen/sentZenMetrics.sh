@@ -5,43 +5,42 @@ source /usr/local/bin/tools.sh
 
 host=$(hostname)
 coin="zen"
-role="securenode"
+role="forgernode"
 username=$(whoami)
-coindaemon="zend"
-coincli="zen-cli"
+coincli="docker compose -f /opt/compose-evm-simplified/deployments/forger/eon/docker-compose.yml exec zend gosu user zen-cli"
 publicIp=$(mypublicip)
-coinexplorerurl=https://explorer.horizen.global/insight-api-zen/sync
 
 metricname="node.highestblock"
-value=$(/usr/bin/$coincli getblockcount)
+value=$($coincli getblockcount)
 sentMetric $host $coin $metricname $value $role $username
 
+netinfo=$($coincli getnetworkinfo)
+
+nodeConnections=$(echo $netinfo | jq -r .connections)
 metricname="node.connections"
-value=$(/usr/bin/$coincli getconnectioncount)
-sentMetric $host $coin $metricname $value $role $username
+sentMetric $host $coin $metricname $nodeConnections $role $username
 
-metricname="node.active"
-apiInfo=$(/usr/bin/curl --silent "https://$zensystembaseurl/api/nodes/$zensystemnodeid/detail?key=$ZEN_SYSTEM_API_KEY")
-status=$(echo $apiInfo | jq -r .status)
-nodeIp4=$(echo $apiInfo | jq -r .ip4)
-nodefqdn=$(echo $apiInfo | jq -r .fqdn)
-value=0
-if [ 'up' == "$status" ] && [ "$publicIp" == "$nodeIp4" ] && [ "$nodefqdn" == "$FQDN" ]; then
-    value=1
-fi
-sentMetric $host $coin $metricname $value $role $username
+nodeVersion=$(echo $netinfo | jq -r .version)
+metricname="node.version"
+sentMetric $host $coin $metricname $nodeVersion $role $username
 
-metricname="node.status"
-netinfo=$(/usr/bin/$coincli getnetworkinfo)
-tlsVerified=$(echo $netinfo | jq -r .tls_cert_verified)
+nodeScore=$(echo $netinfo | jq -r .localaddresses[].score)
+metricname="node.score"
+sentMetric $host $coin $metricname $nodeScore $role $username
+
+nodeIPv4Reachable=$(echo $netinfo | jq -r .networks[0].reachable)
+metricname="node.nodeIPv4Reachable"
+sentMetric $host $coin $metricname $nodeIPv4Reachable $role $username
+
+nodeIPv6Reachable=$(echo $netinfo | jq -r .networks[1].reachable)
+metricname="node.nodeIPv6Reachable"
+sentMetric $host $coin $metricname $nodeIPv6Reachable $role $username
+
 nodePublicIp=$(echo $netinfo | jq -r .localaddresses[].address)
 success=0
-if [ 'true' == "$tlsVerified" ] && [ "$publicIp" == "$nodePublicIp" ]; then
+if [ 'true' == "$nodeIPv4Reachable" ] && [ "$publicIp" == "$nodePublicIp" ]; then
     success=1
 fi
+metricname="node.status"
 sentMetric $host $coin $metricname $success $role $username
 
-metricname="explorer.highestblock"
-highestBlock=$(curl -sk $coinexplorerurl | jq .blockChainHeight)
-value=$highestBlock
-sentMetric $host $coin $metricname $value $role $username

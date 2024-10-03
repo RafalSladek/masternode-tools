@@ -1,7 +1,0 @@
-#!/bin/bash
-
-sudo systemctl status -n 0 zend zentracker zenupdate
-sudo journalctl -ru zend
-sudo journalctl -ru zentracker
-sudo journalctl -ru zenupdate
-sudo systemctl list-timers

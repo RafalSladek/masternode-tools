@@ -1,4 +1,0 @@
-#!/bin/bash
-source tools.sh
-COINUSER=zen
-runCommandWithUser $COINUSER "zen-cli z_gettotalbalance" | jq .
