@@ -44,3 +44,8 @@ sentMetric $host $coin $title $message $role $username <alert_type>
 3. https://remix.ethereum.org/#source=post_page-----2f0ac541130c--------------------------------&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.25+commit.b61c2a91.js
 4. https://gitlab.com/Kryptoroger/eon-smart-contract-tools
 5. https://eon-explorer.horizenlabs.io/
+6. https://docs.horizen.io/horizen_eon/tutorials/faq/
+7. https://luisantoniocrag.medium.com/participating-as-a-forger-node-on-eon-network-using-a-digitaloceans-droplet-2f0ac541130c
+8. https://github.com/HorizenOfficial/eon/blob/main/doc/api/index.md
+9. https://github.com/HorizenOfficial/eon/blob/main/doc/api/transaction/registerForger.md
+10. https://docs.horizen.io/horizen_eon/tutorials/forger_node_setup_guide/
