@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xu
+#set -xu
 
 echo "setting up everything ..."
 

@@ -38,8 +38,8 @@ function sentEvent() {
                             else
                                 alertType=$7
                             fi
-                            
-                            /usr/bin/curl --silent -X POST -H "Content-type: application/json" \
+                            echo "$3=$4"
+                            /usr/bin/curl -sX POST -H "Content-type: application/json" \
                             -d "{
 								\"title\": \"[$3][$5][$2][$1]\",
 								\"text\": \"$4\",
@@ -90,7 +90,8 @@ function sentMetric() {
                             exit -1
                         else
                             currenttime=$(/bin/date +%s)
-                            /usr/bin/curl --silent -X POST -H "Content-type: application/json" \
+			    echo "$3=$4"
+                            /usr/bin/curl -sX POST -H "Content-type: application/json" \
                             -d "{ \"series\" :
                             [{
                                     \"metric\":\"$3\",

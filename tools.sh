@@ -13,6 +13,12 @@ function runCommandWithUser() {
     sudo -u $COINUSER -H sh -c "$COMMAND"
 }
 
+function runEvamppCall() {
+    path=$1
+    baseCmd="docker exec evmapp gosu user curl -sX POST http://127.0.0.1:9545/${path} -H 'accept: application/json' | jq -r ."
+    echo $($baseCmd)
+}
+
 function fail2banJailStatus() {
     JAILS=($(sudo fail2ban-client status | grep "Jail list" | sed -E 's/^[^:]+:[ \t]+//' | sed 's/,//g'))
     for JAIL in ${JAILS[@]}
