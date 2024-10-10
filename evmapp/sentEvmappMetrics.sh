@@ -7,33 +7,30 @@ host=$(hostname)
 coin="evmapp"
 role="forgernode"
 username=$(whoami)
-infoCmd='docker exec evmapp gosu user curl -sX POST http://127.0.0.1:9545/node/info -H "accept: application/json"'
-blockCmd='docker exec evmapp gosu user curl -sX POST http://127.0.0.1:9545/block/best -H "accept: application/json"'
+explorerCmd="curl -sX 'GET' 'https://eon-explorer-api.horizenlabs.io/api/v2/blocks?type=block' -H 'accept: application/json'"
 
 info=$(runEvamppCall "node/info")
 
 value=$(echo $info | jq -r .result.nodeName)
-metricname="$coin.nodeName"
+metricname="$coin.node.name"
 sentMetric $host $coin $metricname $value $role $username
-
 
 value=$(echo $info | jq -r .result.nodeVersion)
-metricname="$coin.nodeVersion"
-sentMetric $host $coin $metricname $value $role $username
-
-value=$(echo $info | jq -r .result.scBlockHeight)
-metricname="$coin.scBlockHeight"
+metricname="$coin.node.version"
 sentMetric $host $coin $metricname $value $role $username
 
 value=$(echo $info | jq -r .result.numberOfConnectedPeers)
-metricname="$coin.numberOfConnectedPeers"
+metricname="$coin.node.numberOfConnectedPeers"
 sentMetric $host $coin $metricname $value $role $username
 
 value=$(echo $info | jq -r '.result.errors | length')
-metricname="$coin.numberOfErrors"
+metricname="$coin.node.numberOfErrors"
 sentMetric $host $coin $metricname $value $role $username
 
 value=$(runEvamppCall "block/best" | jq .result.height)
-metricname="$coin.highestBlock"
+metricname="$coin.node.highestBlock"
 sentMetric $host $coin $metricname $value $role $username
 
+value=$(explorerCmd | jq -r '.next_page_params.block_number')
+metricname="$coin.explorer.highestblock"
+sentMetric $host $coin $metricname $value $role $username
