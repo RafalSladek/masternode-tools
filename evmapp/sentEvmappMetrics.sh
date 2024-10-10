@@ -1,5 +1,6 @@
 #!/bin/bash
-#set -xe
+
+set -euo pipefail
 source /usr/local/bin/ddhelper.sh
 source /usr/local/bin/tools.sh
 
@@ -7,7 +8,7 @@ host=$(hostname)
 coin="evmapp"
 role="forgernode"
 username=$(whoami)
-explorerCmd="curl -sX 'GET' 'https://eon-explorer-api.horizenlabs.io/api/v2/blocks?type=block' -H 'accept: application/json'"
+explorerCmd="curl -sX GET https://eon-explorer-api.horizenlabs.io/api/v2/blocks?type=block -H 'accept: application/json'"
 
 info=$(runEvamppCall "node/info")
 
@@ -31,6 +32,6 @@ value=$(runEvamppCall "block/best" | jq .result.height)
 metricname="$coin.node.highestBlock"
 sentMetric $host $coin $metricname $value $role $username
 
-value=$(explorerCmd | jq -r '.next_page_params.block_number')
+value=$(eval $explorerCmd | jq -r .next_page_params.block_number)
 metricname="$coin.explorer.highestblock"
 sentMetric $host $coin $metricname $value $role $username
